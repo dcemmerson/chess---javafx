@@ -8,17 +8,24 @@ public abstract class Piece {
 	protected String name;
 	protected Image img;
 	protected String imgLocation;
+	protected boolean white;
 	
-	public Piece(String name, String imgName) {
+	public Piece(String name, String imgName, boolean white) {
 		this.name = name;
 		this.imgLocation = "gui/images/" + imgName;
+		this.white = white;
 	}
-	public boolean makeMove(int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY) {
 		System.out.println("makeMove not implemented for " + this.name);
 		return false;
 	}
+	
+	
 	public String getName() {
 		return this.name;
+	}
+	public boolean isWhite() {
+		return white;
 	}
 	
 	protected void setImage(String imgName) {

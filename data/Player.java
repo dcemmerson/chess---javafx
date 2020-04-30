@@ -20,24 +20,24 @@ public class Player {
 	private Piece pawn8;
 
 	
-	public Player() {
-		rook1 = new Rook();
-		rook2 = new Rook();
-		bishop1 = new Bishop();
-		bishop2 = new Bishop();
-		knight1 = new Knight();
-		knight2 = new Knight();
-		queen = new Queen();
-		king = new King();
+	public Player(boolean white) {
+		rook1 = new Rook(white);
+		rook2 = new Rook(white);
+		bishop1 = new Bishop(white);
+		bishop2 = new Bishop(white);
+		knight1 = new Knight(white);
+		knight2 = new Knight(white);
+		queen = new Queen(white);
+		king = new King(white);
 		
-		pawn1 = new Pawn();
-		pawn2 = new Pawn();
-		pawn3 = new Pawn();
-		pawn4 = new Pawn();
-		pawn5 = new Pawn();
-		pawn6 = new Pawn();
-		pawn7 = new Pawn();
-		pawn8 = new Pawn();
+		pawn1 = new Pawn(white);
+		pawn2 = new Pawn(white);
+		pawn3 = new Pawn(white);
+		pawn4 = new Pawn(white);
+		pawn5 = new Pawn(white);
+		pawn6 = new Pawn(white);
+		pawn7 = new Pawn(white);
+		pawn8 = new Pawn(white);
 
 	}	
 

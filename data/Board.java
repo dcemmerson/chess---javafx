@@ -1,21 +1,60 @@
 package data;
 
 public class Board {
-	final int SQUARES_WIDE;
-	final int SQUARES_HIGH;
+	public final static int SQUARES_WIDE = 8;
+	public final static int SQUARES_HIGH = 8;
 	
 	private Piece board[][];
 	
-	public Board(int SQUARES_WIDE, int SQUARES_HIGH, Player player1, Player player2) {
-		this.SQUARES_WIDE = SQUARES_WIDE;
-		this.SQUARES_HIGH = SQUARES_HIGH;
+	public Board(Player playerWhite, Player playerBlack) {
+
 		
 		initializeBoard();
-		placePieces(player1, player2);
+		placePieces(playerWhite, playerBlack);
 	}
 	
 	public Piece[][] getBoard() {
 		return board;
+	}
+	public boolean move(int fromX, int fromY, int toX, int toY) {
+		Piece piece = board[fromY][fromX];
+		
+		if(piece.isValidMove(this, fromX, fromY, toX, toY)) {
+			this.execMove(fromX, fromY, toX, toY);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isPieceBetween(int fromX, int fromY, int toX, int toY) {
+		int xDiff = toX - fromX;
+		int yDiff = toY - fromY;
+		
+		while(Math.abs(xDiff) > 1 || Math.abs(yDiff) > 1) {
+			if(xDiff > 0) {
+				xDiff--;
+			} else if(xDiff < 0) {
+				xDiff++;
+			}
+			if(yDiff > 0) {
+				yDiff--;
+			} else if(yDiff < 0) {
+				yDiff++;
+			}
+			
+			if(board[toY - yDiff][toX - xDiff] != null) {
+				return true;
+			}
+		}
+	
+		return false;
+	}
+	
+	public void execMove(int fromX, int fromY, int toX, int toY) {
+		
+		System.out.println("making move");
+		board[toY][toX] = board[fromY][fromX];
+		board[fromY][fromX] = null;
 	}
 	
 	private void initializeBoard() {
@@ -34,16 +73,18 @@ public class Board {
 		this.board[0][7] = player1.getRook2();
 		this.board[7][0] = player2.getRook1();
 		this.board[7][7] = player2.getRook2();
-		//bishops
-		this.board[0][1] = player1.getBishop1();
-		this.board[0][6] = player1.getBishop2();
-		this.board[7][1] = player2.getBishop1();
-		this.board[7][6] = player2.getBishop2();
 		//knights
-		this.board[0][2] = player1.getKnight1();
-		this.board[0][5] = player1.getKnight2();
-		this.board[7][2] = player2.getKnight1();
-		this.board[7][5] = player2.getKnight2();
+		this.board[0][1] = player1.getKnight1();
+		this.board[0][6] = player1.getKnight2();
+		this.board[7][1] = player2.getKnight1();
+		this.board[7][6] = player2.getKnight2();		
+
+		//bishops
+		this.board[0][2] = player1.getBishop1();
+		this.board[0][5] = player1.getBishop2();
+		this.board[7][2] = player2.getBishop1();
+		this.board[7][5] = player2.getBishop2();
+
 		//queens
 		this.board[0][3] = player1.getQueen();
 		this.board[7][4] = player2.getQueen();

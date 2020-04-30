@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="472.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
-      <AnchorPane fx:id="chessAnchorPane" layoutX="100.0" layoutY="52.0" prefHeight="320" prefWidth="320">
+      <AnchorPane fx:id="chessBoardAnchorPane" layoutX="100.0" layoutY="52.0" prefHeight="320" prefWidth="320">
          <children>
             <Canvas fx:id="chessCanvas" height="320" width="320" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="52.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

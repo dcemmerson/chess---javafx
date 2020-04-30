@@ -13,11 +13,7 @@ import javafx.stage.Stage;
 
 public class MainController implements Initializable {
 
-	final int SQUARES_WIDE = 8;
-	final int SQUARES_HIGH = 8;
-	
-	private int num = 0;
-	
+		
 //	@FXML
 //	private Canvas chessCanvas;
 	
@@ -28,7 +24,8 @@ public class MainController implements Initializable {
 	private Canvas chessCanvas;
 	
 	@FXML
-	private AnchorPane chessAnchorPane;
+	private AnchorPane chessBoardAnchorPane;
+
 
 	private GUIController guiController;
 	
@@ -39,8 +36,8 @@ public class MainController implements Initializable {
 		this.primaryStage = primaryStage;
 		this.root = root;
 		
-		this.game = new Game(SQUARES_WIDE, SQUARES_HIGH);
-		this.guiController = new GUIController(game, chessAnchorPane, chessCanvas, SQUARES_WIDE, SQUARES_HIGH);
+		this.game = new Game();
+		this.guiController = new GUIController(game, chessBoardAnchorPane, chessCanvas);
 		
 		
 	}

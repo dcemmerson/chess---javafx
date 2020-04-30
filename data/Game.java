@@ -2,21 +2,30 @@ package data;
 
 public class Game {
 
-	private Player player1;
-	private Player player2;
+	private Player playerWhite;
+	private Player playerBlack;
 	private Board board;
-	
-	public Game(int SQUARES_WIDE, int SQUARES_HIGH) {
+	private boolean whiteTurn;
+
+	public Game() {
 		
-		this.player1 = new Player();
-		this.player2 = new Player();
+		this.playerWhite = new Player(true);
+		this.playerBlack = new Player(false);
 
-		this.board = new Board(SQUARES_WIDE, SQUARES_HIGH, player1, player2);
+		this.board = new Board(playerWhite, playerBlack);
+		this.whiteTurn = true;
 	}
 	
-	public Piece[][] getBoard() {
-		return board.getBoard();
+	public Board getBoard() {
+		return board;
+	}
+	
+	public boolean isWhiteTurn() {
+		return whiteTurn;
 	}
 
+	public void setWhiteTurn(boolean whiteTurn) {
+		this.whiteTurn = whiteTurn;
+	}
 
 }

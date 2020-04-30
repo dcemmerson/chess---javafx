@@ -1,30 +1,41 @@
 package controller;
 
+import java.util.function.Consumer;
+
 import data.Game;
 import gui.ChessBoard;
 import gui.ChessBoardAction;
+import gui.PieceImageView;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class GUIController {
 
-	private AnchorPane chessAnchorPane;
+	private AnchorPane chessBoardAnchorPane;
 	private ChessBoard chessboard;
 
 	
-	public GUIController(Game game, AnchorPane chessAnchorPane, Canvas chessCanvas, int SQUARES_WIDE, int SQUARES_HIGH) {
-
-		this.chessboard = new ChessBoard(game.getBoard(), chessCanvas, SQUARES_WIDE, SQUARES_HIGH, new ChessBoardAction() {
+	public GUIController(Game game, AnchorPane chessBoardAnchorPane, Canvas chessCanvas) {
+		this.chessBoardAnchorPane = chessBoardAnchorPane;
+		this.chessboard = new ChessBoard(game.getBoard(), chessCanvas, new ChessBoardAction() {
 
 			public void addImage(ImageView img, int x, int y) {
+				System.out.println("adding piece");
 				img.setLayoutX(x);
 				img.setLayoutY(y);
-				chessAnchorPane.getChildren().add(img);
+				chessBoardAnchorPane.getChildren().add(img);
+			}
+			public void movePiece(ImageView img, int x, int y) {
+				System.out.println("abc");
+			}
+			public void removeImage(PieceImageView img) {
+				chessBoardAnchorPane.getChildren().remove(img);
 			}
 			
 		});
-		this.chessAnchorPane = chessAnchorPane;
 		/*
 		chessboard.setChessBoardCanvas(new ChessBoardCanvas() {
 
