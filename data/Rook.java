@@ -4,7 +4,7 @@ public class Rook extends Piece {
 	public Rook(boolean white) {
 		super("Rook", "rook_black.png", white);
 	}
-	public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {
 		Piece[][] gameboard = board.getBoard();
 		int xDiff = toX - fromX;
 		int yDiff = toY - fromY;

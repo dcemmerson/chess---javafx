@@ -1,4 +1,4 @@
-package gui;
+package utility;
 
 public class BoardPoint {
 	private int x;

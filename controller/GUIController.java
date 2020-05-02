@@ -20,10 +20,9 @@ public class GUIController {
 	
 	public GUIController(Game game, AnchorPane chessBoardAnchorPane, Canvas chessCanvas) {
 		this.chessBoardAnchorPane = chessBoardAnchorPane;
-		this.chessboard = new ChessBoard(game.getBoard(), chessCanvas, new ChessBoardAction() {
+		this.chessboard = new ChessBoard(game, chessCanvas, new ChessBoardAction() {
 
 			public void addImage(ImageView img, int x, int y) {
-				System.out.println("adding piece");
 				img.setLayoutX(x);
 				img.setLayoutY(y);
 				chessBoardAnchorPane.getChildren().add(img);

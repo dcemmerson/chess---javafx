@@ -15,7 +15,7 @@ public abstract class Piece {
 		this.imgLocation = "gui/images/" + imgName;
 		this.white = white;
 	}
-	public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {
 		System.out.println("makeMove not implemented for " + this.name);
 		return false;
 	}

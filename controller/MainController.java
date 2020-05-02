@@ -36,7 +36,7 @@ public class MainController implements Initializable {
 		this.primaryStage = primaryStage;
 		this.root = root;
 		
-		this.game = new Game();
+		this.game = new Game(true, true);
 		this.guiController = new GUIController(game, chessBoardAnchorPane, chessCanvas);
 		
 		

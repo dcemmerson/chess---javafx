@@ -7,7 +7,6 @@ public class Board {
 	private Piece board[][];
 	
 	public Board(Player playerWhite, Player playerBlack) {
-
 		
 		initializeBoard();
 		placePieces(playerWhite, playerBlack);
@@ -16,13 +15,13 @@ public class Board {
 	public Piece[][] getBoard() {
 		return board;
 	}
-	public boolean move(int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMoveType(int fromX, int fromY, int toX, int toY) {
 		Piece piece = board[fromY][fromX];
 		
-		if(piece.isValidMove(this, fromX, fromY, toX, toY)) {
-			this.execMove(fromX, fromY, toX, toY);
+		if(piece.isValidMoveType(this, fromX, fromY, toX, toY)) {
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -50,11 +49,21 @@ public class Board {
 		return false;
 	}
 	
-	public void execMove(int fromX, int fromY, int toX, int toY) {
-		
+	public Piece execMove(int fromX, int fromY, int toX, int toY) {
 		System.out.println("making move");
+
+		Piece captured = board[toY][toX];		
 		board[toY][toX] = board[fromY][fromX];
 		board[fromY][fromX] = null;
+		
+		return captured;
+	}
+	
+	public void unexecMove(Piece uncaptured, int toX, int toY, int fromX, int fromY) {
+		System.out.println("unmaking move");
+		board[fromY][fromX] = board[toY][toX];
+		board[toY][toX] = uncaptured;
+		
 	}
 	
 	private void initializeBoard() {

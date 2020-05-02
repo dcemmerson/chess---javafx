@@ -9,7 +9,8 @@ public class Pawn extends Piece {
 		this.hasMoved = false;
 	}
 	
-	public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {
+		//@TODO: rework Pawn.isvalidMove to be more readable
 		Piece[][] gameboard = board.getBoard();
 		int xDiff = toX - fromX;
 		int yDiff = toY - fromY;

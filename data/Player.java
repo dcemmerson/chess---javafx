@@ -1,6 +1,12 @@
 package data;
 
 public class Player {
+	private boolean turn;
+	private boolean local;
+	private boolean won;
+	private boolean inCheck;
+	private boolean white;
+	
 	private Piece rook1;
 	private Piece rook2;
 	private Piece bishop1;
@@ -20,7 +26,13 @@ public class Player {
 	private Piece pawn8;
 
 	
-	public Player(boolean white) {
+	public Player(boolean white, boolean local) {
+		this.turn = white;
+		this.local = local;
+		this.won = false;
+		this.inCheck = false;
+		this.white = white;
+		
 		rook1 = new Rook(white);
 		rook2 = new Rook(white);
 		bishop1 = new Bishop(white);
@@ -39,8 +51,40 @@ public class Player {
 		pawn7 = new Pawn(white);
 		pawn8 = new Pawn(white);
 
-	}	
+	}
+	
+	public boolean isWhite() {
+		return white;
+	}
+	
+	public boolean isInCheck() {
+		return inCheck;
+	}
 
+	public void setInCheck(boolean inCheck) {
+		this.inCheck = inCheck;
+	}
+	
+	public boolean hasWon() {
+		return won;
+	}
+
+	public void setWon(boolean won) {
+		this.won = won;
+	}
+
+	public boolean isLocal() {
+		return local;
+	}
+
+	public boolean isTurn() {
+		return turn;
+	}
+
+	public void setTurn(boolean turn) {
+		this.turn = turn;
+	}
+	
 	public Piece getRook1() {
 		return rook1;
 	}

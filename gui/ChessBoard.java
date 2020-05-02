@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import data.Board;
+import data.Game;
 import data.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -18,7 +19,9 @@ public class ChessBoard {
 
 	public static int SQUARE_SIZE;
 	
+	private Game game;
 	private Board board;
+	private Piece[][] gameboard;
 	private ArrayList<PieceImageView> pieceImagesViews;
 
 	
@@ -32,8 +35,11 @@ public class ChessBoard {
 	
 //	private ChessBoardCanvas chessBoardCanvas;
 		
-	public ChessBoard(Board board, Canvas canvas, ChessBoardAction cba) {
-		this.board = board;
+	public ChessBoard(Game game, Canvas canvas, ChessBoardAction cba) {
+		this.game = game;
+		this.board = game.getBoard();
+		this.gameboard = board.getBoard();
+
 		this.chessCanvas = canvas;
 		this.gc = chessCanvas.getGraphicsContext2D();
 		this.chessBoardAction = cba;
@@ -90,17 +96,42 @@ public class ChessBoard {
 		pieceImgView.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				clickOffsetX = e.getX() - pieceImgView.getSquareX() * SQUARE_SIZE;
-				clickOffsetY = e.getY() - pieceImgView.getSquareY() * SQUARE_SIZE;
+				if(!game.isEnded()) {
+					clickOffsetX = e.getX() - pieceImgView.getSquareX() * SQUARE_SIZE;
+					clickOffsetY = e.getY() - pieceImgView.getSquareY() * SQUARE_SIZE;
+				}
 			}
 		});
 		
+		/*
+		 * 
+		 * 
+		 * (game.getPlayerWhite().isLocal() &&
+						game.getPlayerWhite().isTurn() &&
+						gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite())
+						||
+						(game.getPlayerBlack().isLocal() &&
+								game.getPlayerBlack().isTurn() &&
+								!gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite())
+						)
+		 */
 		//dragged
 		pieceImgView.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				pieceImgView.setX(e.getX() - clickOffsetX);
-				pieceImgView.setY(e.getY() - clickOffsetY);
+				if(!game.isEnded()) {
+					if((game.getPlayerWhite().isLocal() &&
+							game.getPlayerWhite().isTurn() &&
+							gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite()) 
+							|| 
+							(game.getPlayerBlack().isLocal() &&
+							game.getPlayerBlack().isTurn() &&
+							!gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite())
+							){
+						pieceImgView.setX(e.getX() - clickOffsetX);
+						pieceImgView.setY(e.getY() - clickOffsetY);
+					}
+				}
 			}
 		});
 		
@@ -108,19 +139,24 @@ public class ChessBoard {
 		pieceImgView.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				int fromX = pieceImgView.getSquareX();
-				int fromY = pieceImgView.getSquareY();
-				int toX = (int)(e.getX() / SQUARE_SIZE);
-				int toY = (int)(e.getY() / SQUARE_SIZE);
-				if(board.move(fromX, fromY, toX, toY)) {
-					removeCapturedPiece(toX, toY);
-					pieceImgView.updateSquareLocation(toX, toY);
-				}
-				else {
-					pieceImgView.updateSquareLocation(fromX, fromY);
+				if(!game.isEnded()) {
 
+					if(game.getPlayerWhite().isTurn() == gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite()) {
+						int fromX = pieceImgView.getSquareX();
+						int fromY = pieceImgView.getSquareY();
+						int toX = (int)(e.getX() / SQUARE_SIZE);
+						int toY = (int)(e.getY() / SQUARE_SIZE);
+						if(game.moveFullTurn(fromX, fromY, toX, toY)) {
+							removeCapturedPiece(toX, toY);
+							pieceImgView.updateSquareLocation(toX, toY);
+						}
+						else {
+							pieceImgView.updateSquareLocation(fromX, fromY);
+		
+						}
+					}
 				}
-			}			
+			}
 		});
 		
 	}
@@ -130,11 +166,8 @@ public class ChessBoard {
 			
 			@Override
 			public void accept(PieceImageView piece) {
-				
 				if(piece.getSquareX() == squareX && piece.getSquareY() == squareY) {
-					System.out.println("removing piece");
 					chessBoardAction.removeImage(piece);
-					return;
 				}
 			}
 			
