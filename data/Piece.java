@@ -10,9 +10,8 @@ public abstract class Piece {
 	protected String imgLocation;
 	protected boolean white;
 	
-	public Piece(String name, String imgName, boolean white) {
+	public Piece(String name, boolean white) {
 		this.name = name;
-		this.imgLocation = "gui/images/" + imgName;
 		this.white = white;
 	}
 	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {
@@ -26,6 +25,10 @@ public abstract class Piece {
 	}
 	public boolean isWhite() {
 		return white;
+	}
+	
+	protected void setImageLocation(String imgName) {
+		this.imgLocation = "gui/images/" + imgName;
 	}
 	
 	protected void setImage(String imgName) {

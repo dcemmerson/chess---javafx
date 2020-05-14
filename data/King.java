@@ -3,7 +3,14 @@ package data;
 public class King extends Piece {
 	
 	public King(boolean white) {
-		super("King", "king_black.png", white);
+		super("King", white);
+		if(white) {
+			setImageLocation("king_white.png");
+		}
+		else {
+			setImageLocation("king_black.png");
+		}
+	
 	}
 	
 	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {

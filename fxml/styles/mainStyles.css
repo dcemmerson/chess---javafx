@@ -1,6 +1,15 @@
+#mainBorderPane {
 
-#greetingLabel {
-	-fx-color: red;
-	-fx-background-color: blue;
-	-fx-font-size: 2em;
+}
+#chessboardTopArea {
+	-fx-max-height: 100px;
+	
+}
+#chessboardLeftArea {
+	-fx-max-width: 100px;
+}
+#chessboardContainer {
+	-fx-width: 100%;
+	-fx-min-width: 400px;
+	-fx-min-height: 400px;
 }

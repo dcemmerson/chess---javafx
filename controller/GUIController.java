@@ -16,7 +16,7 @@ public class GUIController {
 
 	private AnchorPane chessBoardAnchorPane;
 	private ChessBoard chessboard;
-
+	
 	
 	public GUIController(Game game, AnchorPane chessBoardAnchorPane, Canvas chessCanvas) {
 		this.chessBoardAnchorPane = chessBoardAnchorPane;

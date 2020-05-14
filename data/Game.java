@@ -1,7 +1,5 @@
 package data;
 
-import utility.BoardPoint;
-
 public class Game {
 
 	private Player playerWhite;
@@ -80,6 +78,8 @@ public class Game {
 			currPlayer = playerBlack;
 			nextPlayer = playerWhite;
 		}
+		
+		if(toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
 		
 		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
 		if(isInCheckMate(nextPlayer)) {

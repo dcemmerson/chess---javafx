@@ -4,8 +4,13 @@ public class Pawn extends Piece {
 	private boolean hasMoved;
 
 	public Pawn(boolean white) {
-		super("Pawn", "pawn_black.png", white);
-		this.setImage("pawn_black.png");
+		super("Pawn", white);
+		if(white) {
+			setImageLocation("pawn_white.png");
+		}
+		else {
+			setImageLocation("pawn_black.png");
+		}
 		this.hasMoved = false;
 	}
 	

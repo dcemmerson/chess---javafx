@@ -2,8 +2,15 @@ package data;
 
 public class Knight extends Piece {
 	public Knight(boolean white) {
-		super("Knight", "knight_black.png", white);
+		super("Knight", white);
+		if(white) {
+			setImageLocation("knight_white.png");
+		}
+		else {
+			setImageLocation("knight_black.png");
+		}	
 	}
+	
 	public boolean isValidMoveType(Board board,int fromX, int fromY, int toX, int toY) {
 		Piece[][] gameboard = board.getBoard();
 		int xDiff = Math.abs(toX - fromX);

@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane prefHeight="472.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
-   <children>
-      <AnchorPane fx:id="chessBoardAnchorPane" layoutX="100.0" layoutY="52.0" prefHeight="320" prefWidth="320">
-         <children>
-            <Canvas fx:id="chessCanvas" height="320" width="320" />
-         </children>
-      </AnchorPane>
-   </children>
-</AnchorPane>
+<BorderPane fx:id="mainBorderPane" prefHeight="656.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+   <top>
+      <MenuBar fx:id="menuBar">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                 <MenuItem mnemonicParsing="false" onAction="#closeGame" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#quitGame" text="Quit game">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane fx:id="chessSplitPane" dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <SplitPane fx:id="chatSplitPane" dividerPositions="0.9232" orientation="VERTICAL" prefHeight="627.0" prefWidth="279.0">
+              <items>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="chatbox" disable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane maxHeight="250.0" prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="chatboxTypeArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+              </items>
+            </SplitPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <Pane fx:id="chessboardContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane fx:id="chessBoardAnchorPane" prefHeight="400" prefWidth="400">
+                           <children>
+                              <Canvas fx:id="chessCanvas" height="400" width="400" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </Pane>
+               </center>
+               <top>
+                  <Region fx:id="chessboardTopArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </top>
+               <left>
+                  <Region fx:id="chessboardLeftArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </left>
+            </BorderPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

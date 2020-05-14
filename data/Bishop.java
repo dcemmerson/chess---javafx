@@ -2,7 +2,13 @@ package data;
 
 public class Bishop extends Piece {
 	public Bishop(boolean white){
-		super("Bishop", "bishop_black.png", white);
+		super("Bishop", white);
+		if(white) {
+			setImageLocation("bishop_white.png");
+		}
+		else {
+			setImageLocation("bishop_black.png");
+		}
 	}
 	public boolean isValidMoveType(Board board,int fromX, int fromY, int toX, int toY) {
 		Piece[][] gameboard = board.getBoard();

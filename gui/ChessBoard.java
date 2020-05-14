@@ -45,7 +45,7 @@ public class ChessBoard {
 		this.chessBoardAction = cba;
 		this.pieceImagesViews = new ArrayList<PieceImageView>();
 		
-		this.SQUARE_SIZE = (int)(chessCanvas.getHeight() / Board.SQUARES_HIGH);
+		ChessBoard.SQUARE_SIZE = (int)(chessCanvas.getHeight() / Board.SQUARES_HIGH);
 		
 		drawBoard();
 		
@@ -78,6 +78,8 @@ public class ChessBoard {
 	}
 
 	public void addPieceToBoard(Piece piece, int xSquare, int ySquare) {
+		System.out.println("adding piece to board");
+		System.out.println(piece.getImgLocation());
 			Image img = new Image(piece.getImgLocation(), SQUARE_SIZE, SQUARE_SIZE, false, false);
 			PieceImageView pieceImgView = new PieceImageView(xSquare * SQUARE_SIZE, ySquare * SQUARE_SIZE, xSquare, ySquare);
 			pieceImgView.setImage(img);
@@ -97,25 +99,13 @@ public class ChessBoard {
 			@Override
 			public void handle(MouseEvent e) {
 				if(!game.isEnded()) {
+					pieceImgView.toFront();
 					clickOffsetX = e.getX() - pieceImgView.getSquareX() * SQUARE_SIZE;
 					clickOffsetY = e.getY() - pieceImgView.getSquareY() * SQUARE_SIZE;
 				}
 			}
 		});
 		
-		/*
-		 * 
-		 * 
-		 * (game.getPlayerWhite().isLocal() &&
-						game.getPlayerWhite().isTurn() &&
-						gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite())
-						||
-						(game.getPlayerBlack().isLocal() &&
-								game.getPlayerBlack().isTurn() &&
-								!gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite())
-						)
-		 */
-		//dragged
 		pieceImgView.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
