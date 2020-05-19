@@ -30,6 +30,10 @@ public abstract class Piece {
 	protected void setImageLocation(String imgName) {
 		this.imgLocation = "gui/images/" + imgName;
 	}
+	protected Piece toQueen(boolean isWhite) {
+		System.out.println("wrong queenify");
+		return this;
+	}
 	
 	protected void setImage(String imgName) {
 		try {

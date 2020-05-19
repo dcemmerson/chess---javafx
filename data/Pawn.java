@@ -14,6 +14,11 @@ public class Pawn extends Piece {
 		this.hasMoved = false;
 	}
 	
+	public Piece toQueen(boolean isWhite) {
+		System.out.println("queenify pawn");
+		return new Queen(isWhite);
+	}
+	
 	public boolean isValidMoveType(Board board, int fromX, int fromY, int toX, int toY) {
 		//@TODO: rework Pawn.isvalidMove to be more readable
 		Piece[][] gameboard = board.getBoard();

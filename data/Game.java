@@ -84,6 +84,7 @@ public class Game {
 		
 		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
 		
+		board.queenify(toX, toY);
 /*		
 		if(moveMade) {
 			board.printBoard();
@@ -95,6 +96,7 @@ public class Game {
 			this.ended = true;
 			System.out.println("is in checkmate");
 		}
+				
 		return moveMade;
 	}
 	
@@ -155,6 +157,7 @@ public class Game {
 			}
 		}		
 	}
+
 	
 	public Board getBoard() {
 		return board;

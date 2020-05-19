@@ -15,6 +15,14 @@ public class Board {
 	public Piece[][] getBoard() {
 		return board;
 	}
+	
+	public void queenify(int xSquare, int ySquare){
+		if(ySquare == 0 || ySquare == (Board.SQUARES_HIGH - 1)) {
+			Piece p = board[ySquare][xSquare];
+			board[ySquare][xSquare] = p.toQueen(p.isWhite());
+		}
+	}
+	
 	public boolean isValidMoveType(int fromX, int fromY, int toX, int toY) {
 		Piece piece = board[fromY][fromX];
 		

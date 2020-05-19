@@ -102,8 +102,6 @@ public class ChessBoard {
 		pieceImgView.setY(ySquare * SQUARE_SIZE);
 
 		this.pieceImagesViews.add(pieceImgView);
-
-//		addPieceActionListener(pieceImgView);
 	}
 
 	public void enablePieceActionListeners() {
@@ -357,8 +355,6 @@ public class ChessBoard {
 	
 	public MoveProperties cpuMakeMove(Player player) {
 
-
-
 		if (!game.isEnded() && player != null) {
 
 			int fromX = Math.abs(random.nextInt()) % Board.SQUARES_WIDE;
@@ -492,9 +488,19 @@ public class ChessBoard {
 
 	public void refreshPieces(AnchorPane parent) {
 
-		pieceImagesViews.forEach(p -> {
-			parent.getChildren().remove(p);
-			parent.getChildren().add(p);
+		pieceImagesViews.forEach(piv -> {
+		
+			String imgLocation = (gameboard[piv.getSquareY()][piv.getSquareX()]).getImgLocation();	
+			
+			parent.getChildren().remove(piv);
+			
+			if(!piv.getImage().getUrl().matches("^.*" + imgLocation + "$")) {
+				Image img = new Image(imgLocation, SQUARE_SIZE, SQUARE_SIZE, false, false);
+				piv.setImage(img);
+						
+			}
+			
+			parent.getChildren().add(piv);
 
 		});
 	}
@@ -503,3 +509,4 @@ public class ChessBoard {
 		this.playerInterface = playerInterface;
 	}
 }
+
