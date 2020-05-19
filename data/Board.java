@@ -18,7 +18,8 @@ public class Board {
 	public boolean isValidMoveType(int fromX, int fromY, int toX, int toY) {
 		Piece piece = board[fromY][fromX];
 		
-		if(piece.isValidMoveType(this, fromX, fromY, toX, toY)) {
+		if(piece.isValidMoveType(this, fromX, fromY, toX, toY) 
+				&& (board[toY][toX] == null || board[toY][toX].isWhite() != board[fromY][fromX].isWhite())) {
 			return true;
 		}
 		
@@ -50,7 +51,7 @@ public class Board {
 	}
 	
 	public Piece execMove(int fromX, int fromY, int toX, int toY) {
-		System.out.println("making move");
+		System.out.println("making move: (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
 
 		Piece captured = board[toY][toX];		
 		board[toY][toX] = board[fromY][fromX];
@@ -95,11 +96,11 @@ public class Board {
 		this.board[7][5] = player2.getBishop2();
 
 		//queens
-		this.board[0][3] = player1.getQueen();
-		this.board[7][4] = player2.getQueen();
+		this.board[0][4] = player1.getQueen();
+		this.board[7][3] = player2.getQueen();
 		//kings
-		this.board[0][4] = player1.getKing();
-		this.board[7][3] = player2.getKing();
+		this.board[0][3] = player1.getKing();
+		this.board[7][4] = player2.getKing();
 		
 		//pawns
 		this.board[1][0] = player1.getPawn1();
@@ -120,5 +121,21 @@ public class Board {
 		this.board[6][6] = player2.getPawn7();
 		this.board[6][7] = player2.getPawn8();
 
+	}
+	
+	public void printBoard() {
+		for(int y = 0; y < Board.SQUARES_HIGH; y++) {
+			System.out.print("row " + y + ": ");
+			for(int x = 0; x < Board.SQUARES_WIDE; x++) {
+				if(board[y][x] != null) {
+					System.out.print(board[y][x].getName() + " ");
+				}
+				else {
+					System.out.print("null ");
+				}
+			}
+			System.out.println("");
+		}
+			
 	}
 }

@@ -6,7 +6,13 @@ public class Player {
 	private boolean won;
 	private boolean inCheck;
 	private boolean white;
-	
+	private boolean cpu;
+
+
+	public boolean isCpu() {
+		return cpu;
+	}
+
 	private Piece rook1;
 	private Piece rook2;
 	private Piece bishop1;
@@ -26,12 +32,13 @@ public class Player {
 	private Piece pawn8;
 
 	
-	public Player(boolean white, boolean local) {
+	public Player(boolean white, boolean local, boolean isCpu) {
 		this.turn = white;
 		this.local = local;
 		this.won = false;
 		this.inCheck = false;
 		this.white = white;
+		this.cpu = isCpu;
 		
 		rook1 = new Rook(white);
 		rook2 = new Rook(white);

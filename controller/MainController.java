@@ -1,10 +1,13 @@
 package controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-import application.ChangeScreen;
 import data.Game;
+import gui.ChatBoxTypeArea;
+import gui.ChatScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -12,12 +15,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainController extends Controller implements Initializable {
@@ -27,7 +28,7 @@ public class MainController extends Controller implements Initializable {
 //	private Canvas chessCanvas;
 	
 	private Parent root;
-	
+
 	@FXML
 	private Canvas chessCanvas;	
 	@FXML
@@ -36,11 +37,15 @@ public class MainController extends Controller implements Initializable {
 	private Region chessboardTopArea;
 	@FXML
 	private Region chessboardLeftArea;
+	
+
+	//custom parts
+	private ChatScrollPane chatBox;
 	@FXML
-	private TextArea chatbox;
-	@FXML
-	private TextArea chatboxTypeArea;
-	@FXML
+	private ChatBoxTypeArea chatBoxTypeArea;
+	
+	
+	@FXML	
 	private MenuBar menuBar;
 	@FXML
 	private SplitPane chatSplitPane;
@@ -50,21 +55,41 @@ public class MainController extends Controller implements Initializable {
 	private MenuItem close;
 	
 	
-	private GUIController guiController;
+	private GameController gameController;
 	
 	//data
-	private Game game;
-
+//	private Game game;
 	
-	public void initialize(Stage primaryStage, ChangeScreen screen) {
+	public void initialize(Stage primaryStage, ChangeScreen screen, String arg) {
+		MainActions mainActions = defineMainActions();
 		this.screen = screen;
 		this.stage = stage;
 		
-		this.game = new Game(true, true);
-		this.guiController = new GUIController(game, chessBoardAnchorPane, chessCanvas);
+		this.chatBox = new ChatScrollPane();
+		this.chatSplitPane.getItems().add(chatBox);
+		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions);
+		this.chatSplitPane.getItems().add(chatBoxTypeArea);
+
+		Game game = null;
+		if(arg == "remote") {
+			System.out.println("remote game starting");
+			game = new Game(true, false, false, false);
+		}
+		else if(arg == "1 player local") { //vs cpu is black
+			game = new Game(true, true, false, true);
+		}
+		else if(arg == "cpu vs cpu") {
+			game = new Game(true, true, true, true);
+		}
+		else {
+			//2 player local
+			game = new Game(true, true, false, false);
+		}
+
+		this.gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, mainActions);
 		
 		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			double width = (primaryStage.getWidth() - chessBoardAnchorPane.getWidth() - chatbox.getWidth()) / 2;
+			double width = (primaryStage.getWidth() - chessBoardAnchorPane.getWidth() - chatBox.getWidth()) / 2;
 			if(width > 100) {
 				width = 100;
 			}
@@ -79,11 +104,9 @@ public class MainController extends Controller implements Initializable {
 				height = 100;
 			}
 			chessboardTopArea.setMaxHeight(height);
-			chatSplitPane.setDividerPosition(0, 1 - (chatboxTypeArea.getHeight() / chatSplitPane.getHeight()));
+//			chatSplitPane.setDividerPosition(0, 1 - (chatBoxTypeArea.getHeight() / chatSplitPane.getHeight()));
 		});
 		
-//		close.setOnAction(e -> System.exit(0));
-//		close.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
 
 		
 	}
@@ -95,11 +118,56 @@ public class MainController extends Controller implements Initializable {
 	}
 	@FXML
 	public void quitGame() {
-		screen.changeScreens("start", true, true);
+		screen.changeScreens("start", null, true, true);
 	}
 	@FXML
 	public void closeGame() {
 		System.exit(0);
+	}
+	
+	private MainActions defineMainActions() {
+		return new MainActions() {
+
+			@Override
+			public void appendToChatBox(ArrayList<String> str, boolean white) {
+				
+				str.forEach(new Consumer<String>() {
+
+					public void accept(String s) {
+						Text t = new Text(s);
+						if(s != null && s == str.get(str.size() - 1)) {
+							if(white) {
+								t.setFill(Color.DARKRED);
+							}
+							else {
+								t.setFill(Color.MEDIUMSLATEBLUE);
+							}
+							chatBox.appendText(t);
+						}
+						else if(s != null) {
+							t.setFill(Color.DARKGRAY);
+							chatBox.appendText(t);
+						}
+
+						
+						
+					}
+
+				});
+
+//				chatBorderPane.getChildren().remove(chatScroll);
+//				chatBorderPane.getChildren().add(chatScroll);
+			}
+
+			@Override
+			public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY) {
+				System.out.println("send move");
+//				cpuGuiController.receiveMoveFromOtherPlayer(fromX, fromY, toX, toY);
+				
+				
+			}
+			
+		};
 	}
 
 

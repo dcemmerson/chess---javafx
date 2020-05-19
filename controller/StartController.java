@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import data.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,16 +23,23 @@ public class StartController extends Controller implements Initializable {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	@FXML
+	private void handleStartCpuVsCpuButton(ActionEvent event) {
+		screen.changeScreens("Chess", "cpu vs cpu", false, false);
+	}
 	@FXML
 	private void handleStartRemoteButton(ActionEvent event) {
-		System.out.println("start remote");
+		screen.changeScreens("Chess", "remote", false, false);
 	}
-	
+	@FXML
+	private void handleStartLocal1PlayerButton(ActionEvent event) {
+		screen.changeScreens("Chess", "1 player local", false, false);
+	}
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
-		
-		screen.changeScreens("Chess", false, false);
+		System.out.println("changing to chess");
+
+		screen.changeScreens("Chess", "2 player local", false, false);
 		
 		
 	}

@@ -9,6 +9,8 @@ public class PieceImageView extends ImageView {
 	
 	private int squareX;
 	private int squareY;
+
+	private boolean onBoard;
 	
 	public PieceImageView(double startX, double startY, int xSquareStart, int ySquareStart) {
 		super();
@@ -17,6 +19,9 @@ public class PieceImageView extends ImageView {
 
 		this.squareX = xSquareStart;
 		this.squareY = ySquareStart;
+		
+		this.onBoard = true;
+		
 	}
 	
 	public void updateSquareLocation(int newX, int newY) {
@@ -57,4 +62,13 @@ public class PieceImageView extends ImageView {
 	public void setCurrY(double currY) {
 		this.currY = currY;
 	}
+	
+	public boolean isOnBoard() {
+		return onBoard;
+	}
+
+	public void setOnBoard(boolean onBoard) {
+		this.onBoard = onBoard;
+	}
+
 }

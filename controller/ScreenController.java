@@ -3,8 +3,6 @@ package controller;
 import java.io.IOException;
 import java.util.HashMap;
 
-import application.ChangeScreen;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,11 +20,17 @@ public class ScreenController {
         this.screen = new ChangeScreen() {
 
 			@Override
-			public void changeScreens(String name, boolean destroy, boolean recreate) {
+			public void changeScreens(String name, String arg, boolean destroy, boolean recreate) {
 				String prevTitle = stage.getTitle();
 				SceneInfo prevScene = screenMap.get(prevTitle);
 
-				activate(name);
+				
+				try {
+					activate(name, arg);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 				if(destroy) {
 					removeScreen(prevTitle);
@@ -35,20 +39,28 @@ public class ScreenController {
 				
 				if(recreate) {
 					try {
-						addScreen(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
+						addScreenActive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				}
+				else {
+					addScreenInactive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
+
 				}
 			}
         };
     }
 
-    public void addScreen(String name, String fxml, String stylesheet) throws IOException{
+    public void addScreenInactive(String name, String fxml, String stylesheet) {
+        screenMap.put(name, new SceneInfo(name, stylesheet, fxml, null));
+    }
+    
+    public void addScreenActive(String name, String fxml, String stylesheet) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 		Parent root = loader.load();
 		Controller controller = loader.getController();
-		controller.initialize(stage, screen);
+		controller.initialize(stage, screen, null);
 		
 		Scene scene = new Scene(root);
 		
@@ -56,13 +68,26 @@ public class ScreenController {
 		
         screenMap.put(name, new SceneInfo(name, stylesheet, fxml, scene));
     }
-
+    
     public void removeScreen(String name){
         screenMap.remove(name);
     }
 
-    public void activate(String name){
+    public void activate(String name, String arg) throws IOException{
     	Scene scene = screenMap.get(name).getScene();
+    	if(scene == null) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(screenMap.get(name).getFxmlPath()));
+			Parent root = loader.load();
+			Controller controller = loader.getController();
+			controller.initialize(stage, screen, arg);
+			
+			scene = new Scene(root);
+	    	scene.getStylesheets().add(screenMap.get(name).getStylesheetPath());
+	    	
+			screenMap.get(name).setScene(scene);
+    	
+    	}
+
 		stage.setScene(scene);
 		stage.setTitle(name);
 		stage.show();    

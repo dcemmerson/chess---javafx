@@ -42,18 +42,9 @@
    <center>
       <SplitPane fx:id="chessSplitPane" dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <SplitPane fx:id="chatSplitPane" dividerPositions="0.9232" orientation="VERTICAL" prefHeight="627.0" prefWidth="279.0">
+            <SplitPane fx:id="chatSplitPane" orientation="VERTICAL" prefHeight="627.0" prefWidth="250.0" SplitPane.resizableWithParent="false">
               <items>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
-                     <center>
-                        <TextArea fx:id="chatbox" disable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                     </center>
-                  </BorderPane>
-                  <BorderPane maxHeight="250.0" prefHeight="200.0" prefWidth="200.0">
-                     <center>
-                        <TextArea fx:id="chatboxTypeArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                     </center>
-                  </BorderPane>
+
               </items>
             </SplitPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0">

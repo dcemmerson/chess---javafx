@@ -13,3 +13,16 @@
 	-fx-min-width: 400px;
 	-fx-min-height: 400px;
 }
+
+#chatBorderPane {
+	
+}
+
+#chatScroll {
+	-fx-fit-to-width: true;
+	
+}
+
+#chatBox {
+
+}

@@ -18,6 +18,10 @@ public class SceneInfo {
 	public Scene getScene() {
 		return scene;
 	}
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
 
 	public String getName() {
 		return name;

@@ -18,9 +18,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			sc = new ScreenController(primaryStage);
-			sc.addScreen("start", "/fxml/startWindow.fxml", "/fxml/styles/mainStyles.css");
+			sc.addScreenActive("start", "/fxml/startWindow.fxml", "/fxml/styles/mainStyles.css");
 			
-			sc.activate("start");
+			sc.activate("start", null);
 
 			loadScenes();
 
@@ -32,7 +32,7 @@ public class Main extends Application {
 	public void loadScenes() throws IOException {
 		//chess main screen
 		
-		sc.addScreen("Chess", "/fxml/mainWindow.fxml", "/fxml/styles/mainStyles.css");
+		sc.addScreenInactive("Chess", "/fxml/mainWindow.fxml", "/fxml/styles/mainStyles.css");
 		
 	}
 	

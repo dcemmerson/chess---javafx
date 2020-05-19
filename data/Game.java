@@ -4,13 +4,14 @@ public class Game {
 
 	private Player playerWhite;
 	private Player playerBlack;
+
 	private Board board;
 	private boolean ended;
 
-	public Game(boolean whiteIsLocal, boolean blackIsLocal) {
+	public Game(boolean whiteIsLocal, boolean blackIsLocal, boolean whiteIsCpu, boolean blackIsCpu) {
 		
-		this.playerWhite = new Player(true, whiteIsLocal);
-		this.playerBlack = new Player(false, blackIsLocal);
+		this.playerWhite = new Player(true, whiteIsLocal, whiteIsCpu);
+		this.playerBlack = new Player(false, blackIsLocal, blackIsCpu);
 
 		this.board = new Board(playerWhite, playerBlack);
 		this.ended = false;
@@ -82,6 +83,12 @@ public class Game {
 		if(toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
 		
 		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
+		
+/*		
+		if(moveMade) {
+			board.printBoard();
+		}
+*/	
 		if(isInCheckMate(nextPlayer)) {
 			nextPlayer.setWon(false);
 			currPlayer.setWon(true);
@@ -94,7 +101,9 @@ public class Game {
 	public boolean move(Player currPlayer, Player nextPlayer, int fromX, int fromY, int toX, int toY) {
 		Piece[][] gameboard = board.getBoard();		
 	
-		if(gameboard[fromY][fromX].isWhite() == playerWhite.isTurn() && board.isValidMoveType(fromX, fromY, toX, toY)) {			
+		if(gameboard[fromY][fromX] != null 
+				&& gameboard[fromY][fromX].isWhite() == playerWhite.isTurn() 
+				&& board.isValidMoveType(fromX, fromY, toX, toY)) {			
 			Piece captured = board.execMove(fromX, fromY, toX, toY);
 
 			updatePlayersInCheck();
@@ -108,7 +117,7 @@ public class Game {
 			
 			playerWhite.setTurn(!playerWhite.isTurn());
 			playerBlack.setTurn(!playerBlack.isTurn());
-			
+
 			return true;
 		}
 		return false;
