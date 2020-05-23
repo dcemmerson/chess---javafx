@@ -211,7 +211,6 @@ public class ChessBoard {
 							if(playerInterface != null) {
 								playerInterface.signalMoveMade(new MoveProperties(captureMessage, capturedPiece));
 							}
-							System.out.println("returning from dragged done");
 						} else {
 							piv.updateSquareLocation(fromX, fromY);
 						}
@@ -368,7 +367,7 @@ public class ChessBoard {
 			}
 
 
-			while (!moveMade && player.isTurn()) {
+			while (!moveMade && player.isTurn() && !game.isEnded()) {
 				
 				if (player.isWhite()) {
 					System.out.println("White is going");
@@ -390,17 +389,20 @@ public class ChessBoard {
 					for (int y = 0; y < Board.SQUARES_HIGH; y++) {
 						toY = y;
 						for (int x = 0; x < Board.SQUARES_WIDE; x++) {
+
 							toX = x;
 
 							if (gameboard[toY][toX] != null) {
 								isCaptureMove = true;
-								capturedPieceName = board.getBoard()[toY][toX].getName();
-								capturingPieceName = board.getBoard()[fromY][fromX].getName();
+								capturedPieceName = gameboard[toY][toX].getName();
+								capturingPieceName = gameboard[fromY][fromX].getName();
 							}
 
 							PieceImageView movingPiece = getPieceImageView(fromX, fromY);
 
-							if (moveMade = game.moveFullTurn(fromX, fromY, toX, toY)) {
+							
+							moveMade = game.moveFullTurn(fromX, fromY, toX, toY);
+							if (moveMade) {
 								// successful move
 								// 1. check if any piece image needs to be removed
 								// 2. move image on board
@@ -427,22 +429,28 @@ public class ChessBoard {
 								if (capturedPiece != null) {
 									pieceImagesViews.remove(capturedPiece);
 								}
-
 								return new MoveProperties(captureMessage, capturedPiece);
 								
 							} else {
 								movingPiece.updateSquareLocation(fromX, fromY);
+
 								isCaptureMove = false;
 								capturedPieceName = null;
 								capturingPieceName = null;
 							}
+
 						}
 					}
 				}
 			}
+			
+/*			if(game.isEnded()) {
+				System.out.println("checkmate from chessboard");
+				return new MoveProperties("Checkmate", null);
+			}
+			*/
 		}
 
-//		notifyAll();
 		if (player.isWhite()) {
 			System.out.println("White isnt going");
 		} else {

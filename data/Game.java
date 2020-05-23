@@ -41,6 +41,21 @@ public class Game {
 		return false;
 	}
 	
+	public boolean isStalemate(Player player) {
+		Piece[][] gameboard = board.getBoard();
+		for(int y = 0; y < Board.SQUARES_HIGH; y++) {
+			for(int x = 0; x < Board.SQUARES_WIDE; x++) {
+				if(gameboard[y][x] != null && gameboard[y][x].isWhite() == player.isWhite()) {
+					if(pieceHasAnyValidMoves(player, gameboard[y][x], x, y)) {//then this move makes it not a stalemate
+						return false;
+					}
+				}
+			}
+		}
+		return true;			
+	}
+
+	
 	public boolean pieceHasAnyValidMoves(Player currPlayer, Piece piece, int fromX, int fromY) {
 		for(int y = 0; y < Board.SQUARES_HIGH; y++) {
 			for(int x = 0; x < Board.SQUARES_WIDE; x++) {
@@ -84,7 +99,9 @@ public class Game {
 		
 		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
 		
-		board.queenify(toX, toY);
+		if(moveMade) {
+			board.queenify(toX, toY);
+		}
 /*		
 		if(moveMade) {
 			board.printBoard();
@@ -96,7 +113,8 @@ public class Game {
 			this.ended = true;
 			System.out.println("is in checkmate");
 		}
-				
+		isStalemate(nextPlayer);
+		
 		return moveMade;
 	}
 	
@@ -106,6 +124,7 @@ public class Game {
 		if(gameboard[fromY][fromX] != null 
 				&& gameboard[fromY][fromX].isWhite() == playerWhite.isTurn() 
 				&& board.isValidMoveType(fromX, fromY, toX, toY)) {			
+
 			Piece captured = board.execMove(fromX, fromY, toX, toY);
 
 			updatePlayersInCheck();
@@ -122,6 +141,7 @@ public class Game {
 
 			return true;
 		}
+
 		return false;
 	}
 	

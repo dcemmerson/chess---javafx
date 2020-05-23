@@ -1,7 +1,9 @@
-package controller;
+package threading;
 
 import java.util.concurrent.locks.Lock;
 
+import controller.MoveProperties;
+import controller.PlayerInterface;
 import data.Game;
 import data.Player;
 import gui.ChessBoard;
@@ -16,6 +18,7 @@ public class LocalPlayerMoveService extends MoveService {
 	@Override
 	protected MoveProperties startMoveThread() {
 		hasMoved = false;
+
 		try {
 			while (!game.isEnded() && !lock.isHeldByCurrentThread()) {
 				
@@ -25,7 +28,12 @@ public class LocalPlayerMoveService extends MoveService {
 					lock.unlock();
 					Thread.sleep(500);
 				}
+				else {
+					
+					String gameOverStr = getGameOverMsg();
 
+					mp = new MoveProperties(gameOverStr, null);
+				}
 
 			}
 			chessboard.enablePieceActionListeners();

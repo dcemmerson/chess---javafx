@@ -31,7 +31,6 @@ public abstract class Piece {
 		this.imgLocation = "gui/images/" + imgName;
 	}
 	protected Piece toQueen(boolean isWhite) {
-		System.out.println("wrong queenify");
 		return this;
 	}
 	
