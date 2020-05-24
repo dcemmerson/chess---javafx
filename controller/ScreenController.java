@@ -20,13 +20,13 @@ public class ScreenController {
         this.screen = new ChangeScreen() {
 
 			@Override
-			public void changeScreens(String name, String arg, boolean destroy, boolean recreate) {
+			public void changeScreens(String name, GameType args, boolean destroy, boolean recreate) {
 				String prevTitle = stage.getTitle();
 				SceneInfo prevScene = screenMap.get(prevTitle);
 
 				
 				try {
-					activate(name, arg);
+					activate(name, args);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -73,13 +73,13 @@ public class ScreenController {
         screenMap.remove(name);
     }
 
-    public void activate(String name, String arg) throws IOException{
+    public void activate(String name, GameType args) throws IOException{
     	Scene scene = screenMap.get(name).getScene();
     	if(scene == null) {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(screenMap.get(name).getFxmlPath()));
 			Parent root = loader.load();
 			Controller controller = loader.getController();
-			controller.initialize(stage, screen, arg);
+			controller.initialize(stage, screen, args);
 			
 			scene = new Scene(root);
 	    	scene.getStylesheets().add(screenMap.get(name).getStylesheetPath());

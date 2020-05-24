@@ -36,21 +36,25 @@ public class LocalPlayerMoveService extends MoveService {
 				}
 
 			}
+			if(!game.isEnded()) {
 			chessboard.enablePieceActionListeners();
 			
 			chessboard.setPlayerInterface(localPlayerInterface());
 			
-			while(!hasMoved) {
-				Thread.sleep(100);
+				while(!hasMoved) {
+					Thread.sleep(100);
+				}
+			}
+			else {
+				String gameOverStr = getGameOverMsg();
+
+				mp = new MoveProperties(gameOverStr, null);
 			}
 			
 		} catch (InterruptedException e) {
 			System.out.println("Thread sleep interrupted.");
 		} finally {
-
-			System.out.println("finally unlocking");
 			lock.unlock();
-
 		}
 
 		return mp;

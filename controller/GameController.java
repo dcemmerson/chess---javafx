@@ -87,22 +87,16 @@ public class GameController {
 		});
 
 		if (game.getPlayerWhite().isLocal() && !game.getPlayerWhite().isCpu()) {
-			System.out.println("creating white player");
 			player1MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(), lock);
 
 		} else if (game.getPlayerWhite().isLocal() && game.getPlayerWhite().isCpu()) {
-			System.out.println("creating white cpu");
-
 			player1MS = new CpuMoveService(game, chessboard, game.getPlayerWhite(), lock);
 
 		}
 
 		if (game.getPlayerBlack().isLocal() && !game.getPlayerBlack().isCpu()) {
-			System.out.println("creating black player");
 			player2MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		} else if (game.getPlayerBlack().isCpu()) {
-			System.out.println("creating black cpu");
-
 			player2MS = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		}
 		
@@ -131,10 +125,9 @@ public class GameController {
 						} else {
 							str.add("Black's turn\n");
 						}
-						mainActions.appendToChatBox(str, game.getPlayerWhite().isTurn());
-					} else {
-						mainActions.appendToChatBox(str, game.getPlayerWhite().isTurn());
 					}
+					
+					mainActions.appendToChatBox(str, game.getPlayerWhite().isTurn());
 
 					// remove captured piece off board, if piece was captured
 					if (mp.getPiv() != null) {
@@ -147,7 +140,6 @@ public class GameController {
 				}
 
 				if (!game.isEnded()) {
-					System.out.println("restarting thread");
 					ms.restart();
 				}
 			}
@@ -155,48 +147,8 @@ public class GameController {
 
 	}
 
-	/*
-	 * public void appendBoardResultsToChat() { try {
-	 * mainActions.appendToChatBox(chatMsgs, game.getPlayerWhite().isTurn()); }
-	 * finally {
-	 * 
-	 * } }
-	 */
-
-	public void startGameController(Player player) {
-		Thread t = new Thread(new Cpu(player));
-		t.start();
-
-	}
-
 	public void receiveMoveFromOtherPlayer(int fromX, int fromY, int toX, int toY) {
 //		chessboard.receiveMoveFromOtherPlayer(fromX, fromY, toX, toY);
-	}
-
-	private synchronized void cpuMove(Player player) throws InterruptedException {
-
-		// wait for other player to make turn
-		while (!player.isTurn()) {
-			System.out.println("player.isTurn(): " + player.isTurn());
-
-			System.out.println(Thread.currentThread().getName() + ": wait");
-			wait();
-			Thread.sleep(1000);
-			System.out.println(Thread.currentThread().getName() + ": continuing");
-
-		}
-
-		// Now check if GameController is ready for next move to take place.
-		// Moves occur in following manner:
-		// Player 1 makes move and Player 1 thread set this.chatMsgs with whatever
-		// needs to be appended to the chat pane.
-		// Player 1 thread goes into wait state. Main thread is notify(ed) and appends
-		// msgs to chat pane, then notify(s) player 2 it is their turn. Process repeats.
-
-		try {
-			chessboard.cpuMakeMove(player);
-		} finally {
-		}
 	}
 	
 	public void endGame() {
@@ -207,27 +159,6 @@ public class GameController {
 		player2MS = null;
 	}
 
-	private class Cpu implements Runnable {
-		Player player;
 
-		public Cpu(Player player) {
-			System.out.println("cpu constructor");
-			this.player = player;
-		}
-
-		@Override
-		public void run() {
-
-			while (!game.isEnded()) {
-				try {
-					cpuMove(player);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-
-	}
 
 }

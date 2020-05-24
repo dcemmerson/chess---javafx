@@ -16,7 +16,7 @@ public class Controller implements Initializable{
 		
 	}
 	
-	public void initialize(Stage stage, ChangeScreen screen, String arg) {
+	public void initialize(Stage stage, ChangeScreen screen, GameType args) {
 		this.screen = screen;
 		this.stage = stage;
 		

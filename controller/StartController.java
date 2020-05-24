@@ -25,21 +25,23 @@ public class StartController extends Controller implements Initializable {
 	}
 	@FXML
 	private void handleStartCpuVsCpuButton(ActionEvent event) {
-		screen.changeScreens("Chess", "cpu vs cpu", false, false);
+		GameType gt = new GameType(true, true, true, true);
+		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartRemoteButton(ActionEvent event) {
-		screen.changeScreens("Chess", "remote", false, false);
+		GameType gt = new GameType(true, false, false, false);
+		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartLocal1PlayerButton(ActionEvent event) {
-		screen.changeScreens("Chess", "1 player local", false, false);
+		GameType gt = new GameType(true, true, false, true);
+		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
-		System.out.println("changing to chess");
-
-		screen.changeScreens("Chess", "2 player local", false, false);
+		GameType gt = new GameType(true, true, false, false);
+		screen.changeScreens("Chess", gt, false, false);
 		
 		
 	}

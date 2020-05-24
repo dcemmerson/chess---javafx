@@ -13,11 +13,13 @@ public class ChatBoxTypeArea extends BorderPane {
 
 	private TextArea textArea;
 	private MainActions mainActions;
+	private boolean white;
 	
-	public ChatBoxTypeArea(MainActions ma) {
+	public ChatBoxTypeArea(MainActions ma, boolean isWhite) {
 		super();
 		
 		this.mainActions = ma;
+		this.white = isWhite;
 		textArea = new TextArea();
 		
 		setCenter(textArea);
@@ -28,14 +30,15 @@ public class ChatBoxTypeArea extends BorderPane {
 			public void handle(KeyEvent key) {
 				if(key.getCode() == KeyCode.ENTER) {
 					ArrayList<String> str = new ArrayList<String>();
-					str.add(textArea.getText());
+					str.add(textArea.getText() + "\n");
 					textArea.setText("");
 
-					mainActions.appendToChatBox(str, true);
+					mainActions.appendToChatBox(str, white);
 				}
 			}
 			
 		});
 		
 	}
+
 }

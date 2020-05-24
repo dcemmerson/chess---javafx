@@ -60,31 +60,18 @@ public class MainController extends Controller implements Initializable {
 	//data
 //	private Game game;
 	
-	public void initialize(Stage primaryStage, ChangeScreen screen, String arg) {
+	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args) {
 		MainActions mainActions = defineMainActions();
 		this.screen = screen;
 		this.stage = stage;
 		
 		this.chatBox = new ChatScrollPane();
 		this.chatSplitPane.getItems().add(chatBox);
-		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions);
+		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions, args.isP1Local());
 		this.chatSplitPane.getItems().add(chatBoxTypeArea);
 
-		Game game = null;
-		if(arg == "remote") {
-			System.out.println("remote game starting");
-			game = new Game(true, false, false, false);
-		}
-		else if(arg == "1 player local") { //vs cpu is black
-			game = new Game(true, true, false, true);
-		}
-		else if(arg == "cpu vs cpu") {
-			game = new Game(true, true, true, true);
-		}
-		else {
-			//2 player local
-			game = new Game(true, true, false, false);
-		}
+		Game game = new Game(args.isP1Local(), args.isP2Local(), args.isP1IsCpu(), args.isP2IsCpu());
+		
 
 		this.gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, mainActions);
 		
@@ -168,6 +155,5 @@ public class MainController extends Controller implements Initializable {
 			
 		};
 	}
-
-
 }
+

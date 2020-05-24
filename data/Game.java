@@ -7,7 +7,9 @@ public class Game {
 
 	private Board board;
 	private boolean ended;
-
+	private boolean checkmate;
+	private boolean stalemate;
+	
 	public Game(boolean whiteIsLocal, boolean blackIsLocal, boolean whiteIsCpu, boolean blackIsCpu) {
 		
 		this.playerWhite = new Player(true, whiteIsLocal, whiteIsCpu);
@@ -15,6 +17,8 @@ public class Game {
 
 		this.board = new Board(playerWhite, playerBlack);
 		this.ended = false;
+		this.checkmate = false;
+		this.stalemate = false;
 	}
 
 	public Player getPlayerWhite() {
@@ -23,36 +27,60 @@ public class Game {
 	public Player getPlayerBlack() {
 		return playerBlack;
 	}
-	public boolean isInCheckMate(Player currPlayer) {
-		if(currPlayer.isInCheck()) {
-			Piece[][] gameboard = board.getBoard();
-			for(int y = 0; y < Board.SQUARES_HIGH; y++) {
-				for(int x = 0; x < Board.SQUARES_WIDE; x++) {
-					if(gameboard[y][x] != null && gameboard[y][x].isWhite() == currPlayer.isWhite()) {
-						if(pieceHasAnyValidMoves(currPlayer, gameboard[y][x], x, y)) {//then this move gets player out of check
-							return false;
-						}
-					}
+	
+	public boolean moveFullTurn(int fromX, int fromY, int toX, int toY) {
+		Player currPlayer;
+		Player nextPlayer;
+		
+		if(playerWhite.isTurn()) {
+			currPlayer = playerWhite;
+			nextPlayer = playerBlack;
+		}
+		else {
+			currPlayer = playerBlack;
+			nextPlayer = playerWhite;
+		}
+		
+		if(toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
+		
+		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
+		
+		if(moveMade) {
+			board.queenify(toX, toY);
+			if(!hasMovesAvailable(nextPlayer)) {
+				if(nextPlayer.isInCheck()) {
+					nextPlayer.setWon(false);
+					currPlayer.setWon(true);
+					this.ended = true;
+					this.checkmate = true;
+					System.out.println("is in checkmate");
+				}
+				else {
+					this.stalemate = true;
+					this.ended = true;
+					System.out.println("is in stalemate");
+
 				}
 			}
-			return true;			
 		}
-
-		return false;
+		
+		return moveMade;
 	}
 	
-	public boolean isStalemate(Player player) {
+	public boolean hasMovesAvailable(Player currPlayer) {
 		Piece[][] gameboard = board.getBoard();
 		for(int y = 0; y < Board.SQUARES_HIGH; y++) {
 			for(int x = 0; x < Board.SQUARES_WIDE; x++) {
-				if(gameboard[y][x] != null && gameboard[y][x].isWhite() == player.isWhite()) {
-					if(pieceHasAnyValidMoves(player, gameboard[y][x], x, y)) {//then this move makes it not a stalemate
-						return false;
+				if(gameboard[y][x] != null && gameboard[y][x].isWhite() == currPlayer.isWhite()) {
+					if(pieceHasAnyValidMoves(currPlayer, gameboard[y][x], x, y)) {//then this move gets player out of check
+						return true;
 					}
 				}
 			}
 		}
-		return true;			
+		// Then no available moves and currPlayer is either in checkmate
+		// or it's a stalemate.
+		return false;			
 	}
 
 	
@@ -80,42 +108,6 @@ public class Game {
 		}
 		return false;
 		
-	}
-	
-	public boolean moveFullTurn(int fromX, int fromY, int toX, int toY) {
-		Player currPlayer;
-		Player nextPlayer;
-		
-		if(playerWhite.isTurn()) {
-			currPlayer = playerWhite;
-			nextPlayer = playerBlack;
-		}
-		else {
-			currPlayer = playerBlack;
-			nextPlayer = playerWhite;
-		}
-		
-		if(toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
-		
-		boolean moveMade = move(currPlayer, nextPlayer, fromX, fromY, toX, toY);
-		
-		if(moveMade) {
-			board.queenify(toX, toY);
-		}
-/*		
-		if(moveMade) {
-			board.printBoard();
-		}
-*/	
-		if(isInCheckMate(nextPlayer)) {
-			nextPlayer.setWon(false);
-			currPlayer.setWon(true);
-			this.ended = true;
-			System.out.println("is in checkmate");
-		}
-		isStalemate(nextPlayer);
-		
-		return moveMade;
 	}
 	
 	public boolean move(Player currPlayer, Player nextPlayer, int fromX, int fromY, int toX, int toY) {
@@ -195,5 +187,12 @@ public class Game {
 		playerBlack.endGame();
 		playerWhite.endGame();
 //		board.endGame();
+	}
+	public boolean isCheckmate() {
+		return checkmate;
+	}
+
+	public boolean isStalemate() {
+		return stalemate;
 	}
 }
