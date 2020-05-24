@@ -25,6 +25,9 @@ public class GameController {
 	private MainActions mainActions;
 	private Game game;
 
+	private MoveService player1MS;
+	private MoveService player2MS;
+	
 	private ArrayList<String> chatMsgs;
 	private final Lock lock = new ReentrantLock();
 
@@ -85,32 +88,28 @@ public class GameController {
 
 		if (game.getPlayerWhite().isLocal() && !game.getPlayerWhite().isCpu()) {
 			System.out.println("creating white player");
-			LocalPlayerMoveService localPlayer1 = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(),
-					lock);
-			localPlayer1.setOnSucceeded(cpuEventHandler(localPlayer1));
-			localPlayer1.start();
+			player1MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(), lock);
+
 		} else if (game.getPlayerWhite().isLocal() && game.getPlayerWhite().isCpu()) {
 			System.out.println("creating white cpu");
 
-			CpuMoveService cpu1 = new CpuMoveService(game, chessboard, game.getPlayerWhite(), lock);
-			cpu1.setOnSucceeded(cpuEventHandler(cpu1));
-			cpu1.start();
+			player1MS = new CpuMoveService(game, chessboard, game.getPlayerWhite(), lock);
+
 		}
 
 		if (game.getPlayerBlack().isLocal() && !game.getPlayerBlack().isCpu()) {
 			System.out.println("creating black player");
-
-			LocalPlayerMoveService localPlayer2 = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(),
-					lock);
-			localPlayer2.setOnSucceeded(cpuEventHandler(localPlayer2));
-			localPlayer2.start();
+			player2MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		} else if (game.getPlayerBlack().isCpu()) {
 			System.out.println("creating black cpu");
 
-			CpuMoveService cpu2 = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
-			cpu2.setOnSucceeded(cpuEventHandler(cpu2));
-			cpu2.start();
+			player2MS = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		}
+		
+		player1MS.setOnSucceeded(cpuEventHandler(player1MS));
+		player1MS.start();
+		player2MS.setOnSucceeded(cpuEventHandler(player2MS));
+		player2MS.start();
 	}
 
 	private EventHandler<WorkerStateEvent> cpuEventHandler(MoveService ms) {
@@ -147,7 +146,6 @@ public class GameController {
 					chessboard.refreshPieces(chessBoardAnchorPane);
 				}
 
-				System.out.println("thread success handler - restart next");
 				if (!game.isEnded()) {
 					System.out.println("restarting thread");
 					ms.restart();
@@ -199,6 +197,14 @@ public class GameController {
 			chessboard.cpuMakeMove(player);
 		} finally {
 		}
+	}
+	
+	public void endGame() {
+		game.setEnded(true);
+		player1MS.cancel();
+		player2MS.cancel();
+		player1MS = null;
+		player2MS = null;
 	}
 
 	private class Cpu implements Runnable {

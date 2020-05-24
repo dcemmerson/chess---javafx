@@ -60,6 +60,26 @@ public class Player {
 
 	}
 	
+	public void endGame() {
+		rook1 = null;
+		rook2 = null;
+		bishop1 = null;
+		bishop2 = null;
+		knight1 = null;
+		knight2 = null;
+		queen = null;
+		king = null;
+		
+		pawn1 = null;
+		pawn2 = null;
+		pawn3 = null;
+		pawn4 = null;
+		pawn5 = null;
+		pawn6 = null;
+		pawn7 = null;
+		pawn8 = null;
+	}
+	
 	public boolean isWhite() {
 		return white;
 	}

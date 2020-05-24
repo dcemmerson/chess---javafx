@@ -42,7 +42,7 @@ public class CpuMoveService extends MoveService {
 			}
 
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Thread sleep interrupted.");
 		} 
 		finally {
 			lock.unlock();

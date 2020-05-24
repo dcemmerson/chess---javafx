@@ -190,4 +190,10 @@ public class Game {
 	public void setEnded(boolean ended) {
 		this.ended = ended;
 	}
+	
+	public void endGame() {
+		playerBlack.endGame();
+		playerWhite.endGame();
+//		board.endGame();
+	}
 }

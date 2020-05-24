@@ -45,7 +45,7 @@ public class LocalPlayerMoveService extends MoveService {
 			}
 			
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Thread sleep interrupted.");
 		} finally {
 
 			System.out.println("finally unlocking");

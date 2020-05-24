@@ -50,6 +50,7 @@ public class MoveService extends Service<Object> {
 	protected String getGameOverMsg() {
 		String str = "Game over!\n";
 		
+		// If it's white's turn and we got here, that means why has no moves and is in checkmate.
 		if(player.isWhite()) {
 			str += "Black wins!";
 		}

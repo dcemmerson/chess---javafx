@@ -118,7 +118,8 @@ public class MainController extends Controller implements Initializable {
 	}
 	@FXML
 	public void quitGame() {
-		screen.changeScreens("start", null, true, true);
+		gameController.endGame();
+		screen.changeScreens("start", null, true, false);
 	}
 	@FXML
 	public void closeGame() {
@@ -155,8 +156,6 @@ public class MainController extends Controller implements Initializable {
 
 				});
 
-//				chatBorderPane.getChildren().remove(chatScroll);
-//				chatBorderPane.getChildren().add(chatScroll);
 			}
 
 			@Override
