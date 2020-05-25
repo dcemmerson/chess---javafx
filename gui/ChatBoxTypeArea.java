@@ -31,9 +31,11 @@ public class ChatBoxTypeArea extends BorderPane {
 				if(key.getCode() == KeyCode.ENTER) {
 					ArrayList<String> str = new ArrayList<String>();
 					str.add(textArea.getText() + "\n");
-					textArea.setText("");
 
 					mainActions.appendToChatBox(str, white);
+					mainActions.sendText(textArea.getText());
+
+					textArea.setText("");
 				}
 			}
 			

@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import data.Game;
-import data.Player;
 import gui.ChessBoard;
 import gui.ChessBoardAction;
 import gui.PieceImageView;
@@ -14,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import network.threading.HostConnectService;
 import threading.CpuMoveService;
 import threading.LocalPlayerMoveService;
 import threading.MoveService;
@@ -93,18 +93,30 @@ public class GameController {
 			player1MS = new CpuMoveService(game, chessboard, game.getPlayerWhite(), lock);
 
 		}
+		else { // remote
+			mainActions.createNetworkController();
+		}
 
 		if (game.getPlayerBlack().isLocal() && !game.getPlayerBlack().isCpu()) {
 			player2MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		} else if (game.getPlayerBlack().isCpu()) {
 			player2MS = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		}
+		else { // remote
+			mainActions.createNetworkController();
+		}
 		
-		player1MS.setOnSucceeded(cpuEventHandler(player1MS));
-		player1MS.start();
-		player2MS.setOnSucceeded(cpuEventHandler(player2MS));
-		player2MS.start();
+		if(player1MS != null) {
+			player1MS.setOnSucceeded(cpuEventHandler(player1MS));
+			player1MS.start();
+		}
+		if(player2MS != null){
+			player2MS.setOnSucceeded(cpuEventHandler(player2MS));
+			player2MS.start();
+		}
 	}
+
+
 
 	private EventHandler<WorkerStateEvent> cpuEventHandler(MoveService ms) {
 		return new EventHandler<WorkerStateEvent>() {
@@ -159,6 +171,7 @@ public class GameController {
 		player2MS = null;
 	}
 
-
-
+	public Game getGame() {
+		return game;
+	}
 }
