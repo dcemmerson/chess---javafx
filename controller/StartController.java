@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.text.TextFlow;
 
 public class StartController extends Controller implements Initializable {
 
@@ -17,30 +19,28 @@ public class StartController extends Controller implements Initializable {
 	@FXML
 	private Button startRemoteButton;
 
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 	@FXML
 	private void handleStartCpuVsCpuButton(ActionEvent event) {
-		GameType gt = new GameType(true, true, true, true);
+		GameType gt = new GameType(true, true, true, true, false);
 		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartRemoteButton(ActionEvent event) {
-		GameType gt = new GameType(true, false, false, false);
-		screen.changeScreens("Chess", gt, false, false);
+//		GameType gt = new GameType(false, false, false, false, true);
+		screen.changeScreens("Network", false, false);
 	}
 	@FXML
 	private void handleStartLocal1PlayerButton(ActionEvent event) {
-		GameType gt = new GameType(true, true, false, true);
+		GameType gt = new GameType(true, true, false, true, false);
 		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
-		GameType gt = new GameType(true, true, false, false);
+		GameType gt = new GameType(true, true, false, false, false);
 		screen.changeScreens("Chess", gt, false, false);
 		
 		

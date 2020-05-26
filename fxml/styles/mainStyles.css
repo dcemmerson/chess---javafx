@@ -1,5 +1,6 @@
 #mainBorderPane {
-
+	-fx-fit-to-width: true;
+	-fx-width: 100%
 }
 #chessboardTopArea {
 	-fx-max-height: 100px;
@@ -25,4 +26,11 @@
 
 #chatBox {
 
+}
+.networkInputLabel{
+	-fx-text-fill: rgb(251, 251, 251);
+}
+
+#networkInfoPane {
+	-fx-background-color: rgba(0, 0, 0, 0.75);
 }

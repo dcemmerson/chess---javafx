@@ -103,7 +103,7 @@ public class GameController {
 			player2MS = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		}
 		else { // remote
-			mainActions.createNetworkController();
+//			mainActions.createNetworkController();
 		}
 		
 		if(player1MS != null) {

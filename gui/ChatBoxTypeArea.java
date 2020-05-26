@@ -23,7 +23,7 @@ public class ChatBoxTypeArea extends BorderPane {
 		textArea = new TextArea();
 		
 		setCenter(textArea);
-		
+				
 		textArea.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
 			@Override
@@ -35,7 +35,8 @@ public class ChatBoxTypeArea extends BorderPane {
 					mainActions.appendToChatBox(str, white);
 					mainActions.sendText(textArea.getText());
 
-					textArea.setText("");
+					textArea.clear();
+					
 				}
 			}
 			

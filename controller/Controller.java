@@ -21,4 +21,9 @@ public class Controller implements Initializable{
 		this.stage = stage;
 		
 	}
+	public void initialize(Stage stage, ChangeScreen screen) {
+		this.screen = screen;
+		this.stage = stage;
+		
+	}
 }

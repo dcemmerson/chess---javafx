@@ -3,11 +3,7 @@ package application;
 import java.io.IOException;
 
 import controller.ScreenController;
-import controller.StartController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
@@ -32,8 +28,9 @@ public class Main extends Application {
 	public void loadScenes() throws IOException {
 		//chess main screen
 		
-		sc.addScreenInactive("Chess", "/fxml/mainWindow.fxml", "/fxml/styles/mainStyles.css");
-		
+		sc.addScreenInactive("Chess", "/fxml/chessWindow.fxml", "/fxml/styles/mainStyles.css");
+		sc.addScreenInactive("Network", "/fxml/networkWindow.fxml", "/fxml/styles/mainStyles.css");
+
 	}
 	
 	public static void main(String[] args) {

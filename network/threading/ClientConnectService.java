@@ -12,13 +12,13 @@ public class ClientConnectService extends HostConnectService {
 	}
 	
 	public Object connect() throws InterruptedException {
-		ChessClient chessClient = new ChessClient(hostname, port);
+		chessHost = new ChessClient(hostname, port);
 			
-		while(!(chessClient.connect())) {
+		while(!(chessHost.connect())) {
 			System.out.println("no connection - sleep 2000 - " + Thread.currentThread().getName());
 			Thread.sleep(2000);
 			
 		}
-		return chessClient;
+		return chessHost;
 	}
 }

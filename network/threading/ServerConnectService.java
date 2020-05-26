@@ -8,11 +8,11 @@ public class ServerConnectService extends HostConnectService {
 		this.port = port;
 	}
 	public Object connect() throws InterruptedException {
-		ChessServer chessServer = new ChessServer(port);
-			
-		chessServer.listen();
+		chessHost = new ChessServer(port);
+
+		chessHost.listen();
 		
-		return chessServer;
+		return chessHost;
 	}
 
 }

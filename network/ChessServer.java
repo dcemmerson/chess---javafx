@@ -1,9 +1,6 @@
 package network;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,16 +15,40 @@ public class ChessServer extends ChessHost {
 		this.host = "localhost";
 	}
 
+	public void closeSocket() throws IOException {
+		if(serverSocket != null) {
+			serverSocket.close();
+			serverSocket = null;
+//			serverSocket.setReuseAddress(true);
+		}
+		if(socket != null) {
+			socket.close();
+			socket = null;
+		}
+		
+		if(in != null) {
+			in.close();
+			in = null;
+		}
+		
+		if(out != null) {
+			out.close();
+			out = null;
+		}
+	}
+	
 	public void listen() {
 		try {
-			ServerSocket serverSocket = new ServerSocket(port); 
-			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
+			ServerSocket serverSocket = new ServerSocket(port);
 			this.serverSocket = serverSocket;
+
+			Socket clientSocket = serverSocket.accept();
 			this.socket = clientSocket;
+
+			PrintWriterSocket out = new PrintWriterSocket(clientSocket);
 			this.out = out;
+
+			BufferedReaderSocket in = new BufferedReaderSocket(clientSocket);
 			this.in = in;
 
 		} catch (IOException e) {
@@ -36,7 +57,5 @@ public class ChessServer extends ChessHost {
 		}
 	}
 	
-	public void write(String str) {
-		out.println(str);
-	}
+
 }

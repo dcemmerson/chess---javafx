@@ -8,17 +8,22 @@ import java.util.function.Consumer;
 import data.Game;
 import gui.ChatBoxTypeArea;
 import gui.ChatScrollPane;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class MainController extends Controller implements Initializable {
@@ -159,7 +164,7 @@ public class MainController extends Controller implements Initializable {
 
 			@Override
 			public void receiveText(String str) {
-				Text t = new Text(str);
+				Text t = new Text(str + "\n");
 
 				if (gameController.getGame().getPlayerWhite().isLocal()) {
 					t.setFill(Color.DARKRED);
@@ -167,6 +172,13 @@ public class MainController extends Controller implements Initializable {
 					t.setFill(Color.MEDIUMSLATEBLUE);
 				}
 				chatBox.appendText(t);
+			}
+
+			@Override
+			public void startGame(boolean player1IsRemote, boolean player2IsRemote) {
+				Game game = new Game(player1IsRemote, player2IsRemote, false, false);
+
+				gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, this);
 			}
 
 		};
