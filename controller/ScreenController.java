@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import network.ChessHost;
 
 public class ScreenController {
 
@@ -18,7 +19,34 @@ public class ScreenController {
         this.stage = stage;
         
         this.screen = new ChangeScreen() {
-
+        	 @Override
+ 	        public void changeScreens(String name, boolean destroy, boolean recreate) {
+ 	        	String prevTitle = stage.getTitle();
+ 	        	SceneInfo prevScene = screenMap.get(prevTitle);
+ 	
+ 	        	try {
+ 	        		activate(name);
+ 	        	} catch (IOException e1) {
+ 					e1.printStackTrace();
+ 				}
+ 		
+ 				if (destroy) {
+ 					removeScreen(prevTitle);
+ 		
+ 				}
+ 		
+ 				if (recreate) {
+ 					try {
+ 						addScreenActive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
+ 					} catch (IOException e) {
+ 						e.printStackTrace();
+ 					}
+ 				} else {
+ 					addScreenInactive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
+ 		
+ 				}
+ 			}
+        	 
 			@Override
 			public void changeScreens(String name, GameType args, boolean destroy, boolean recreate) {
 				String prevTitle = stage.getTitle();
@@ -48,32 +76,34 @@ public class ScreenController {
 				}
 			}
 
-	        @Override
-	        public void changeScreens(String name, boolean destroy, boolean recreate) {
-	        	String prevTitle = stage.getTitle();
-	        	SceneInfo prevScene = screenMap.get(prevTitle);
-	
-	        	try {
-	        		activate(name);
-	        	} catch (IOException e1) {
+			@Override
+			public void changeScreens(String name, GameType args, ChessHost ch, boolean destroy, boolean recreate) {
+				String prevTitle = stage.getTitle();
+				SceneInfo prevScene = screenMap.get(prevTitle);
+				
+				try {
+					activate(name, args, ch);
+				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-		
-				if (destroy) {
+
+				if(destroy) {
 					removeScreen(prevTitle);
 		
 				}
-		
-				if (recreate) {
+				
+				if(recreate) {
 					try {
 						addScreenActive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				} else {
-					addScreenInactive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
-		
 				}
+				else {
+					addScreenInactive(prevTitle, prevScene.getFxmlPath(), prevScene.getStylesheetPath());
+
+				}
+				
 			}
 	
         };
@@ -100,25 +130,7 @@ public class ScreenController {
 		screenMap.remove(name);
 	}
 
-	public void activate(String name, GameType args) throws IOException {
-		Scene scene = screenMap.get(name).getScene();
-		if (scene == null) {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(screenMap.get(name).getFxmlPath()));
-			Parent root = loader.load();
-			Controller controller = loader.getController();
-			controller.initialize(stage, screen, args);
-
-			scene = new Scene(root);
-			scene.getStylesheets().add(screenMap.get(name).getStylesheetPath());
-
-			screenMap.get(name).setScene(scene);
-
-		}
-
-		stage.setScene(scene);
-		stage.setTitle(name);
-		stage.show();
-	}
+	
 	public void activate(String name) throws IOException {
 		Scene scene = screenMap.get(name).getScene();
 		if (scene == null) {
@@ -138,4 +150,45 @@ public class ScreenController {
 		stage.setTitle(name);
 		stage.show();
 	}
+	
+	public void activate(String name, GameType args) throws IOException {
+		Scene scene = screenMap.get(name).getScene();
+		if (scene == null) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(screenMap.get(name).getFxmlPath()));
+			Parent root = loader.load();
+			Controller controller = loader.getController();
+			controller.initialize(stage, screen, args);
+
+			scene = new Scene(root);
+			scene.getStylesheets().add(screenMap.get(name).getStylesheetPath());
+
+			screenMap.get(name).setScene(scene);
+
+		}
+
+		stage.setScene(scene);
+		stage.setTitle(name);
+		stage.show();
+	}
+	
+	public void activate(String name, GameType args, ChessHost ch) throws IOException {
+		Scene scene = screenMap.get(name).getScene();
+		if (scene == null) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(screenMap.get(name).getFxmlPath()));
+			Parent root = loader.load();
+			Controller controller = loader.getController();
+			controller.initialize(stage, screen, args, ch);
+
+			scene = new Scene(root);
+			scene.getStylesheets().add(screenMap.get(name).getStylesheetPath());
+
+			screenMap.get(name).setScene(scene);
+
+		}
+
+		stage.setScene(scene);
+		stage.setTitle(name);
+		stage.show();
+	}
+
 }

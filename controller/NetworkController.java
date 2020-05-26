@@ -23,6 +23,7 @@ public class NetworkController extends Controller implements Runnable {
 //	private ChessClient chessClient;
 //	private ChessServer chessServer;
 //	private ChessHost chessHost;
+		
 	private MainActions mainActions;
 
 	private HostSendService hss;
@@ -45,10 +46,10 @@ public class NetworkController extends Controller implements Runnable {
 	public NetworkController() {
 		System.out.println("default constr");
 	}
-
-	public NetworkController(MainActions ma) {
+	
+	public NetworkController(ChessHost ch, MainActions ma) {
 		this.mainActions = ma;
-
+		this.startNetworkServices(ch);
 	}
 
 	private void startNetworkServices(ChessHost ch) {
@@ -116,7 +117,16 @@ public class NetworkController extends Controller implements Runnable {
 				hcs.cancel();
 				
 				if(ch.isConnected()) {
-					startNetworkServices((ChessHost) wse.getSource().getValue());				
+					GameType gt;
+					if(hcs.isServer()) {
+						gt = new GameType(true, false, false, false);
+					}
+					else {
+						gt = new GameType(false, true, false, false);
+					}
+//					startNetworkServices((ChessHost) wse.getSource().getValue());
+
+					screen.changeScreens("Chess", gt, ch, false, false);
 				}
 				else {
 					try {
@@ -160,6 +170,10 @@ public class NetworkController extends Controller implements Runnable {
 	@Override
 	public void run() {
 
+	}
+	
+	public void setMainActions(MainActions ma) {
+		this.mainActions = ma;
 	}
 
 }

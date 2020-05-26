@@ -7,6 +7,7 @@ public class ClientConnectService extends HostConnectService {
 	private String hostname;
 
 	public ClientConnectService(String hostname, String port) {
+		this.server = false;
 		this.port = port;
 		this.hostname = hostname;
 	}

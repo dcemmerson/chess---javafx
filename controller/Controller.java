@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import network.ChessHost;
 
 public class Controller implements Initializable{
 	
@@ -16,14 +17,19 @@ public class Controller implements Initializable{
 		
 	}
 	
-	public void initialize(Stage stage, ChangeScreen screen, GameType args) {
-		this.screen = screen;
-		this.stage = stage;
-		
-	}
+
 	public void initialize(Stage stage, ChangeScreen screen) {
 		this.screen = screen;
 		this.stage = stage;
-		
+	}
+	
+	public void initialize(Stage stage, ChangeScreen screen, GameType args) {
+		this.screen = screen;
+		this.stage = stage;
+	}
+	
+	public void initialize(Stage stage, ChangeScreen screen, GameType args, ChessHost ch) {	
+		this.screen = screen;
+		this.stage = stage;
 	}
 }

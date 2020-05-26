@@ -8,23 +8,19 @@ import java.util.function.Consumer;
 import data.Game;
 import gui.ChatBoxTypeArea;
 import gui.ChatScrollPane;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import network.ChessHost;
 
 public class MainController extends Controller implements Initializable {
 
@@ -65,8 +61,8 @@ public class MainController extends Controller implements Initializable {
 	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args) {
 		MainActions mainActions = defineMainActions();
 		this.screen = screen;
-		this.stage = stage;
-		this.networkController = null;
+		this.stage = primaryStage;
+//		this.networkController = null;
 
 		this.chatBox = new ChatScrollPane();
 		this.chatSplitPane.getItems().add(chatBox);
@@ -77,27 +73,13 @@ public class MainController extends Controller implements Initializable {
 
 		this.gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, mainActions);
 
-		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			double width = (primaryStage.getWidth() - chessBoardAnchorPane.getWidth() - chatBox.getWidth()) / 2;
-			if (width > 100) {
-				width = 100;
-			}
-			chessboardLeftArea.setMaxWidth(width);
-
-		});
-		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-
-			double height = (primaryStage.getHeight() - chessBoardAnchorPane.getHeight() - menuBar.getHeight()) / 2;
-
-			if (height > 100) {
-				height = 100;
-			}
-			chessboardTopArea.setMaxHeight(height);
-//			chatSplitPane.setDividerPosition(0, 1 - (chatBoxTypeArea.getHeight() / chatSplitPane.getHeight()));
-		});
+		setStageBehavior();
 
 	}
-
+	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args, ChessHost ch) {
+		this.networkController = new NetworkController(ch, defineMainActions());		
+		initialize(primaryStage, screen, args);
+	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -150,10 +132,6 @@ public class MainController extends Controller implements Initializable {
 
 			}
 
-			@Override
-			public void createNetworkController() {
-				networkController = new NetworkController(this);
-			}
 
 			@Override
 			public void sendText(String str) {
@@ -182,5 +160,26 @@ public class MainController extends Controller implements Initializable {
 			}
 
 		};
+	}
+	
+	public void setStageBehavior() {
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			double width = (stage.getWidth() - chessBoardAnchorPane.getWidth() - chatBox.getWidth()) / 2;
+			if (width > 100) {
+				width = 100;
+			}
+			chessboardLeftArea.setMaxWidth(width);
+
+		});
+		stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+
+			double height = (stage.getHeight() - chessBoardAnchorPane.getHeight() - menuBar.getHeight()) / 2;
+
+			if (height > 100) {
+				height = 100;
+			}
+			chessboardTopArea.setMaxHeight(height);
+//			chatSplitPane.setDividerPosition(0, 1 - (chatBoxTypeArea.getHeight() / chatSplitPane.getHeight()));
+		});
 	}
 }

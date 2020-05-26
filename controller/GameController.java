@@ -94,7 +94,10 @@ public class GameController {
 
 		}
 		else { // remote
-			mainActions.createNetworkController();
+			if (game.getPlayerWhite().isLocal()) {
+				player1MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(), lock);
+
+			}
 		}
 
 		if (game.getPlayerBlack().isLocal() && !game.getPlayerBlack().isCpu()) {
@@ -103,7 +106,10 @@ public class GameController {
 			player2MS = new CpuMoveService(game, chessboard, game.getPlayerBlack(), lock);
 		}
 		else { // remote
-//			mainActions.createNetworkController();
+			if (game.getPlayerBlack().isLocal()) {
+				player2MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(), lock);
+
+			}
 		}
 		
 		if(player1MS != null) {

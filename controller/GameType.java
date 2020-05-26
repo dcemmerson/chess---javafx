@@ -7,14 +7,12 @@ public class GameType {
 	private boolean p2IsCpu;
 	private boolean remoteGame;
 	
-	public GameType(boolean p1Local, boolean p2Local, boolean p1IsCpu, boolean p2IsCpu, boolean remoteGame) {
+	public GameType(boolean p1Local, boolean p2Local, boolean p1IsCpu, boolean p2IsCpu) {
 		this.p1Local = p1Local;
 		this.p2Local = p2Local;
 		
 		this.p1IsCpu = p1IsCpu;
 		this.p2IsCpu = p2IsCpu;
-		
-		this.remoteGame = remoteGame;
 	}
 
 	public boolean isP1Local() {

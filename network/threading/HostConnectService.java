@@ -10,6 +10,7 @@ public class HostConnectService extends Service<Object> {
 	
 	protected ChessHost chessHost;
 	protected String port;
+	protected boolean server;
 	
 	@Override
 	protected Task<Object> createTask() {
@@ -33,6 +34,10 @@ public class HostConnectService extends Service<Object> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isServer() {
+		return server;
 	}
 		
 }

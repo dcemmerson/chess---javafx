@@ -25,7 +25,7 @@ public class StartController extends Controller implements Initializable {
 	}
 	@FXML
 	private void handleStartCpuVsCpuButton(ActionEvent event) {
-		GameType gt = new GameType(true, true, true, true, false);
+		GameType gt = new GameType(true, true, true, true);
 		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
@@ -35,12 +35,12 @@ public class StartController extends Controller implements Initializable {
 	}
 	@FXML
 	private void handleStartLocal1PlayerButton(ActionEvent event) {
-		GameType gt = new GameType(true, true, false, true, false);
+		GameType gt = new GameType(true, true, false, true);
 		screen.changeScreens("Chess", gt, false, false);
 	}
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
-		GameType gt = new GameType(true, true, false, false, false);
+		GameType gt = new GameType(true, true, false, false);
 		screen.changeScreens("Chess", gt, false, false);
 		
 		
