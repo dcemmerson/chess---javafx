@@ -36,6 +36,7 @@ public class LocalPlayerMoveService extends MoveService {
 				}
 
 			}
+			
 			if(!game.isEnded()) {
 			chessboard.enablePieceActionListeners();
 			

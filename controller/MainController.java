@@ -1,9 +1,7 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 import data.Game;
 import gui.ChatBoxTypeArea;
@@ -20,7 +18,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import network.ChessDataPacket;
 import network.ChessHost;
+import utility.ChessMove;
 
 public class MainController extends Controller implements Initializable {
 
@@ -55,6 +55,8 @@ public class MainController extends Controller implements Initializable {
 	private GameController gameController;
 	private NetworkController networkController;
 
+	private String username;
+
 	// data
 //	private Game game;
 
@@ -66,7 +68,7 @@ public class MainController extends Controller implements Initializable {
 
 		this.chatBox = new ChatScrollPane();
 		this.chatSplitPane.getItems().add(chatBox);
-		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions, args.isP1Local());
+		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions, args.isP1Local(), username);
 		this.chatSplitPane.getItems().add(chatBoxTypeArea);
 
 		Game game = new Game(args.isP1Local(), args.isP2Local(), args.isP1IsCpu(), args.isP2IsCpu());
@@ -76,10 +78,13 @@ public class MainController extends Controller implements Initializable {
 		setStageBehavior();
 
 	}
+
 	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args, ChessHost ch) {
-		this.networkController = new NetworkController(ch, defineMainActions());		
+		this.networkController = new NetworkController(ch, defineMainActions());
+		this.username = ch.getUserName();
 		initialize(primaryStage, screen, args);
 	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -101,42 +106,43 @@ public class MainController extends Controller implements Initializable {
 		return new MainActions() {
 
 			@Override
-			public void appendToChatBox(ArrayList<String> str, boolean white) {
+			public void appendToChatBox(String str, boolean white) {
 
-				str.forEach(new Consumer<String>() {
-
-					public void accept(String s) {
-						Text t = new Text(s);
-						if (s != null && s == str.get(str.size() - 1)) {
-							if (white) {
-								t.setFill(Color.DARKRED);
-							} else {
-								t.setFill(Color.MEDIUMSLATEBLUE);
-							}
-							chatBox.appendText(t);
-						} else if (s != null) {
-							t.setFill(Color.DARKGRAY);
-							chatBox.appendText(t);
-						}
-
+				if (str != null) {
+					Text t = new Text(str);
+					if (white) {
+						t.setFill(Color.DARKRED);
+					} else {
+						t.setFill(Color.MEDIUMSLATEBLUE);
 					}
+					chatBox.appendText(t);
+				}
+			}
+			
+			@Override
+			public void appendToChatBox(String str) {
 
-				});
+				if (str != null) {
+					Text t = new Text(str);
+					t.setFill(Color.DARKGRAY);
 
+					chatBox.appendText(t);
+				}
 			}
 
 			@Override
-			public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY) {
-				System.out.println("send move");
-//				cpuGuiController.receiveMoveFromOtherPlayer(fromX, fromY, toX, toY);
-
+			public void sendMoveToRemotePlayer(int fromX, int fromY, int toX, int toY) {
+				if (networkController != null) {
+					ChessDataPacket cdp = new ChessDataPacket(fromX, fromY, toX, toY);
+					networkController.write(cdp);
+				}
 			}
-
 
 			@Override
 			public void sendText(String str) {
 				if (networkController != null) {
-					networkController.write(str);
+					ChessDataPacket cdp = new ChessDataPacket(username + ": " + str );
+					networkController.write(cdp);
 				}
 			}
 
@@ -144,12 +150,24 @@ public class MainController extends Controller implements Initializable {
 			public void receiveText(String str) {
 				Text t = new Text(str + "\n");
 
-				if (gameController.getGame().getPlayerWhite().isLocal()) {
+				if (gameController.getGame().getPlayerBlack().isLocal()) {
 					t.setFill(Color.DARKRED);
 				} else {
 					t.setFill(Color.MEDIUMSLATEBLUE);
 				}
 				chatBox.appendText(t);
+			}
+			
+			@Override
+			public void receiveChessDataPacket(ChessDataPacket cdp) {
+				System.out.println("receive move");
+				if(cdp.isMessage()) {
+					receiveText(cdp.getMessage());
+				}
+				else if(cdp.isMove()) {
+					ChessMove cm = cdp.getChessMove();
+					gameController.receiveMoveFromRemotePlayer(cm.getFromX(), cm.getFromY(), cm.getToX(), cm.getToY());
+				}
 			}
 
 			@Override
@@ -161,7 +179,7 @@ public class MainController extends Controller implements Initializable {
 
 		};
 	}
-	
+
 	public void setStageBehavior() {
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			double width = (stage.getWidth() - chessBoardAnchorPane.getWidth() - chatBox.getWidth()) / 2;

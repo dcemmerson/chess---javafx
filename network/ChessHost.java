@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ChessHost {
-	String host;
-	int port;
-	Socket socket;
-	PrintWriterSocket out;
-	BufferedReaderSocket in;
+	protected String username;
+	
+	protected String host;
+	protected int port;
+	protected Socket socket;
+//	protected PrintWriterSocket out;
+//	protected BufferedReaderSocket in;
+	protected ObjectOutputStreamSocket oos;
+	protected ObjectInputStreamSocket ois;
 
 
 	public boolean isConnected() {
@@ -28,30 +32,28 @@ public class ChessHost {
 			socket = null;
 		}
 		
-		if(in != null) {
-			in.close();
-			in = null;
+		if(ois != null) {
+			ois.close();
+			ois = null;
 		}
 		
-		if(out != null) {
-			out.close();
-			out = null;
+		if(oos != null) {
+			oos.close();
+			oos = null;
 		}
 	}
 	
-	public void write(String str) {
-		out.printSocket(str);
+	public void write(ChessDataPacket cdp) {
+		oos.printCdpSocket(cdp);
 	}
 
-	public String readLine() {
-		try {
-			String str = in.readSocket();
-			return str;
-		}
-		catch(IOException e) {
-			System.out.println(e);
-			return "Error reading from socket.";
-		}
+	public ChessDataPacket readLine() {
+		ChessDataPacket cdp = ois.readCdpSocket();
+		return cdp;
+	}
+	
+	public String getUserName() {
+		return username;
 	}
 	
 }

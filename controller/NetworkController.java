@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.TextFlow;
+import network.ChessDataPacket;
 import network.ChessHost;
 import network.threading.ClientConnectService;
 import network.threading.HostConnectService;
@@ -18,7 +19,11 @@ import network.threading.ServerConnectService;
 
 public class NetworkController extends Controller implements Runnable {
 	public static String ENDLINE = "\n..\n";
+	public static String CHAT_ENDLINE = "\n.CHAT.\n";
+	public static String CHESSMOVE_ENDLINE = "\n.CHESSMOVE.\n";
 	public static String ENDLINE_REGEX = "(" + NetworkController.ENDLINE + ")?+$";
+	public static String CHAT_ENDLINE_REGEX = "(" + NetworkController.CHAT_ENDLINE + ")?+$";
+	public static String CHESSMOVE_ENDLINE_REGEX_ = "(" + NetworkController.CHESSMOVE_ENDLINE + ")?+$";
 
 //	private ChessClient chessClient;
 //	private ChessServer chessServer;
@@ -32,6 +37,8 @@ public class NetworkController extends Controller implements Runnable {
 	private ClientConnectService ccs;
 	private ServerConnectService scs;
 	
+	@FXML 
+	private TextField username;
 	@FXML
 	private TextField remoteIpAddress;
 	@FXML 
@@ -60,8 +67,8 @@ public class NetworkController extends Controller implements Runnable {
 
 			@Override
 			public void handle(WorkerStateEvent wse) {
-				String str = (String) wse.getSource().getValue();
-				mainActions.receiveText(str);
+				ChessDataPacket cdp = (ChessDataPacket) wse.getSource().getValue();
+				mainActions.receiveChessDataPacket(cdp);
 				hrs.restart();
 			}
 
@@ -71,8 +78,8 @@ public class NetworkController extends Controller implements Runnable {
 		hrs.start();
 	}
 
-	public void write(String str) {
-		hss.setText(str);
+	public void write(ChessDataPacket cdp) {
+		hss.setChessDataPacket(cdp);
 		hss.restart();
 	}
 
@@ -81,8 +88,10 @@ public class NetworkController extends Controller implements Runnable {
 		connectButton.setDisable(true);
 		connectButton.setText("Connecting...");
 		
-		ccs = new ClientConnectService(remoteIpAddress.getText().trim(), remotePort.getText().trim());
-		scs = new ServerConnectService(myPort.getText().trim());
+		String un = username.getText().trim();
+		
+		ccs = new ClientConnectService(remoteIpAddress.getText().trim(), remotePort.getText().trim(), un);
+		scs = new ServerConnectService(myPort.getText().trim(), un);
 		ccs.start();
 		scs.start();
 		

@@ -4,12 +4,13 @@ import network.ChessServer;
 
 public class ServerConnectService extends HostConnectService {
 	
-	public ServerConnectService(String port) {
+	public ServerConnectService(String port, String username) {
 		this.server = true;
 		this.port = port;
+		this.username = username;
 	}
 	public Object connect() throws InterruptedException {
-		chessHost = new ChessServer(port);
+		chessHost = new ChessServer(port, username);
 
 		chessHost.listen();
 		

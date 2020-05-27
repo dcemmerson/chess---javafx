@@ -1,11 +1,13 @@
 package controller;
 
-import java.util.ArrayList;
+import network.ChessDataPacket;
 
 public interface MainActions {
-	public void appendToChatBox(ArrayList<String> str, boolean white);
-	public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY);
+	public void appendToChatBox(String str, boolean white);
+	public void appendToChatBox(String str);
 	public void sendText(String str);
 	public void receiveText(String str);
+	public void receiveChessDataPacket(ChessDataPacket cdp);
 	public void startGame(boolean player1IsRemote, boolean player2IsRemote);
+	public void sendMoveToRemotePlayer(int fromX, int fromY, int toX, int toY);
 }

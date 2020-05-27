@@ -1,10 +1,10 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import data.Game;
+import data.Player;
 import gui.ChessBoard;
 import gui.ChessBoardAction;
 import gui.PieceImageView;
@@ -13,10 +13,10 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import network.threading.HostConnectService;
 import threading.CpuMoveService;
 import threading.LocalPlayerMoveService;
 import threading.MoveService;
+import threading.RemoteMoveService;
 
 public class GameController {
 
@@ -28,7 +28,7 @@ public class GameController {
 	private MoveService player1MS;
 	private MoveService player2MS;
 	
-	private ArrayList<String> chatMsgs;
+	private String chatMsg;
 	private final Lock lock = new ReentrantLock();
 
 	public GameController(Game game, AnchorPane chessBoardAnchorPane, Canvas chessCanvas, MainActions mainActions) {
@@ -54,23 +54,21 @@ public class GameController {
 
 			@Override
 			public void switchTurns(boolean isWhiteTurn, String captureMessage) {
-				ArrayList<String> str = new ArrayList<String>();
-
-				str.add(captureMessage);
+				String str = captureMessage;
 
 				if (isWhiteTurn) {
-					str.add("White's turn\n");
+					str += "White's turn\n";
 				} else {
-					str.add("Black's turn\n");
+					str += "Black's turn\n";
 				}
 
-				chatMsgs = str;
+				chatMsg = str;
 //				mainActions.appendToChatBox(str, isWhiteTurn);
 			}
 
 			@Override
 			public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY) {
-				mainActions.sendMoveToOtherPlayer(fromX, fromY, toX, toY);
+				mainActions.sendMoveToRemotePlayer(fromX, fromY, toX, toY);
 			}
 
 			public void refresh() {
@@ -96,7 +94,9 @@ public class GameController {
 		else { // remote
 			if (game.getPlayerWhite().isLocal()) {
 				player1MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(), lock);
-
+			}
+			else {
+				player1MS = null;
 			}
 		}
 
@@ -108,23 +108,25 @@ public class GameController {
 		else { // remote
 			if (game.getPlayerBlack().isLocal()) {
 				player2MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerBlack(), lock);
-
+			}
+			else {
+				player2MS = null;
 			}
 		}
 		
 		if(player1MS != null) {
-			player1MS.setOnSucceeded(cpuEventHandler(player1MS));
+			player1MS.setOnSucceeded(endMoveHandler(player1MS, true));
 			player1MS.start();
 		}
 		if(player2MS != null){
-			player2MS.setOnSucceeded(cpuEventHandler(player2MS));
+			player2MS.setOnSucceeded(endMoveHandler(player2MS, true));
 			player2MS.start();
 		}
 	}
 
 
 
-	private EventHandler<WorkerStateEvent> cpuEventHandler(MoveService ms) {
+	private EventHandler<WorkerStateEvent> endMoveHandler(MoveService ms, boolean restart) {
 		return new EventHandler<WorkerStateEvent>() {
 
 			@Override
@@ -133,19 +135,22 @@ public class GameController {
 				MoveProperties mp = (MoveProperties) wse.getSource().getValue();
 
 				if (mp != null) {
-					ArrayList<String> str = new ArrayList<String>();
+					String str = "";
 
-					str.add(mp.getMsg());
-
+					if(mp.getMsg() != null) {
+						str += mp.getMsg();
+					}
+					
 					if (!game.isEnded()) {
 						if (game.getPlayerWhite().isTurn()) {
-							str.add("White's turn\n");
+							str += "White's turn\n";
 						} else {
-							str.add("Black's turn\n");
+							str += "Black's turn\n";
 						}
 					}
 					
-					mainActions.appendToChatBox(str, game.getPlayerWhite().isTurn());
+					mainActions.appendToChatBox(str);
+					mainActions.sendMoveToRemotePlayer(mp.getFromX(), mp.getFromY(), mp.getToX(), mp.getToY());
 
 					// remove captured piece off board, if piece was captured
 					if (mp.getPiv() != null) {
@@ -157,7 +162,7 @@ public class GameController {
 					chessboard.refreshPieces(chessBoardAnchorPane);
 				}
 
-				if (!game.isEnded()) {
+				if (!game.isEnded() && restart) {
 					ms.restart();
 				}
 			}
@@ -165,8 +170,23 @@ public class GameController {
 
 	}
 
-	public void receiveMoveFromOtherPlayer(int fromX, int fromY, int toX, int toY) {
-//		chessboard.receiveMoveFromOtherPlayer(fromX, fromY, toX, toY);
+	public void receiveMoveFromRemotePlayer(int fromX, int fromY, int toX, int toY) {
+		Player p;
+		
+		if(!game.getPlayerWhite().isLocal()) {
+			p = game.getPlayerWhite();
+			player1MS = new RemoteMoveService(game, chessboard, p, lock, fromX, fromY, toX, toY);
+			player1MS.setOnSucceeded(endMoveHandler(player1MS, false));
+			player1MS.start();
+		}
+		else {
+			p = game.getPlayerBlack();
+			player2MS = new RemoteMoveService(game, chessboard, p, lock, fromX, fromY, toX, toY);
+			player2MS.setOnSucceeded(endMoveHandler(player2MS, false));
+			player2MS.start();
+		}
+		
+		
 	}
 	
 	public void endGame() {

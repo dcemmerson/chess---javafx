@@ -44,7 +44,6 @@ public class ChessBoard {
 
 //	private ChessBoardCanvas chessBoardCanvas;
 
-
 	public ChessBoard(Game game, Canvas canvas, ChessBoardAction cba) {
 		this.random = new Random();
 
@@ -202,14 +201,14 @@ public class ChessBoard {
 										+ "\n";
 							}
 
-
 							chessBoardAction.switchTurns(game.getPlayerWhite().isTurn(), captureMessage);
 
 							if (capturedPiece != null) {
 								pieceImagesViews.remove(capturedPiece);
 							}
-							if(playerInterface != null) {
-								playerInterface.signalMoveMade(new MoveProperties(captureMessage, capturedPiece));
+							if (playerInterface != null) {
+								playerInterface.signalMoveMade(
+										new MoveProperties(captureMessage, capturedPiece, fromX, fromY, toX, toY));
 							}
 						} else {
 							piv.updateSquareLocation(fromX, fromY);
@@ -219,139 +218,71 @@ public class ChessBoard {
 			}
 		};
 	}
-	/*
-	 * private void addPieceActionListener(PieceImageView pieceImgView) {
-	 * 
-	 * // clicked pieceImgView.setOnMousePressed(new EventHandler<MouseEvent>() {
-	 * 
-	 * @Override public void handle(MouseEvent e) { if (!game.isEnded()) {
-	 * pieceImgView.toFront(); clickOffsetX = e.getX() - pieceImgView.getSquareX() *
-	 * SQUARE_SIZE; clickOffsetY = e.getY() - pieceImgView.getSquareY() *
-	 * SQUARE_SIZE; } } });
-	 * 
-	 * pieceImgView.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	 * 
-	 * @Override public void handle(MouseEvent e) { if (!game.isEnded()) { Player
-	 * white = game.getPlayerWhite(); Player black = game.getPlayerBlack();
-	 * 
-	 * if ((white.isLocal() && white.isTurn() && !white.isCpu() &&
-	 * gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite()) ||
-	 * (black.isLocal() && black.isTurn() && !black.isCpu() &&
-	 * !gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite()))
-	 * { System.out.println("inside dragging"); pieceImgView.setX(e.getX() -
-	 * clickOffsetX); pieceImgView.setY(e.getY() - clickOffsetY); } } } });
-	 * 
-	 * // end drag pieceImgView.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	 * 
-	 * @Override public void handle(MouseEvent e) { if (!game.isEnded()) { Player
-	 * white = game.getPlayerWhite(); Player black = game.getPlayerBlack(); if
-	 * (white.isTurn() ==
-	 * gameboard[pieceImgView.getSquareY()][pieceImgView.getSquareX()].isWhite() &&
-	 * ((white.isTurn() && white.isLocal() && !white.isCpu()) || (black.isTurn() &&
-	 * black.isLocal() && !black.isCpu()))) { boolean isCaptureMove = false; String
-	 * captureMessage = null; String capturedPieceName = null; String
-	 * capturingPieceName = null;
-	 * 
-	 * int fromX = pieceImgView.getSquareX(); int fromY = pieceImgView.getSquareY();
-	 * int toX = (int) (e.getX() / SQUARE_SIZE); int toY = (int) (e.getY() /
-	 * SQUARE_SIZE);
-	 * 
-	 * if (board.getBoard()[toY][toX] != null) { isCaptureMove = true;
-	 * capturedPieceName = board.getBoard()[toY][toX].getName(); capturingPieceName
-	 * = board.getBoard()[fromY][fromX].getName(); }
-	 * 
-	 * if (game.moveFullTurn(fromX, fromY, toX, toY)) { // successful move // 1.
-	 * check if any piece image needs to be removed // 2. move image on board // 3.
-	 * set capturing piece name and set string equal to display to user // 4. update
-	 * whose turn it is on the gui using cba interface removeCapturedPiece(toX,
-	 * toY); pieceImgView.updateSquareLocation(toX, toY);
-	 * 
-	 * // if now player white turn is true, that means black just made move. Else
-	 * white // just made move if (isCaptureMove && game.getPlayerWhite().isTurn())
-	 * { captureMessage = "Black " + capturingPieceName + " capture white " +
-	 * capturedPieceName + "\n"; } else if (isCaptureMove &&
-	 * !game.getPlayerWhite().isTurn()) { captureMessage = "White " +
-	 * capturingPieceName + " capture black " + capturedPieceName + "\n"; }
-	 * 
-	 * // notify the other play that this move was made, if they are a cpu or a
-	 * remote // player if (!game.getPlayerWhite().isLocal() ||
-	 * !game.getPlayerBlack().isLocal()) {
-	 * chessBoardAction.sendMoveToOtherPlayer(fromX, fromY, toX, toY); }
-	 * chessBoardAction.switchTurns(game.getPlayerWhite().isTurn(), captureMessage);
-	 * chessBoardAction.displayMessage(captureMessage); } else {
-	 * pieceImgView.updateSquareLocation(fromX, fromY); } cpuStartMove(); } } } });
-	 * }
-	 */
 
-	/*
-	public MoveProperties localMakeMove(Player player, int fromX, int fromY, int toX, int toY) {
+	public MoveProperties remotePlayerMakeMove(Player player, int fromX, int fromY, int toX, int toY) {
 
 		if (!game.isEnded() && player != null) {
 
 			boolean moveMade = false;
-
+				
 			if (gameboard[fromY][fromX] != null && player.isWhite() == gameboard[fromY][fromX].isWhite()) {
 				boolean isCaptureMove = false;
 				String captureMessage = null;
 				String capturedPieceName = null;
 				String capturingPieceName = null;
 
+
 				if (gameboard[toY][toX] != null) {
 					isCaptureMove = true;
-					capturedPieceName = board.getBoard()[toY][toX].getName();
-					capturingPieceName = board.getBoard()[fromY][fromX].getName();
+					capturedPieceName = gameboard[toY][toX].getName();
+					capturingPieceName = gameboard[fromY][fromX].getName();
 				}
 
 				PieceImageView movingPiece = getPieceImageView(fromX, fromY);
 
-				if (moveMade = game.moveFullTurn(fromX, fromY, toX, toY)) {
+				
+				moveMade = game.moveFullTurn(fromX, fromY, toX, toY);
+				if (moveMade) {
 					// successful move
 					// 1. check if any piece image needs to be removed
 					// 2. move image on board
 					// 3. set capturing piece name and set string equal to display to user
 					// 4. update whose turn it is on the gui using cba interface
 					PieceImageView capturedPiece = getPieceImageView(toX, toY);
-
 					movingPiece.updateSquareLocation(toX, toY);
 
 					// if now player white turn is true, that means black just made move. Else white
 					// just made move
 					if (isCaptureMove && game.getPlayerWhite().isTurn()) {
-						captureMessage = "Black " + capturingPieceName + " capture white " + capturedPieceName + "\n";
+						captureMessage = "Black " + capturingPieceName + " capture white "
+								+ capturedPieceName + "\n";
 					} else if (isCaptureMove && !game.getPlayerWhite().isTurn()) {
-						captureMessage = "White " + capturingPieceName + " capture black " + capturedPieceName + "\n";
+						captureMessage = "White " + capturingPieceName + " capture black "
+								+ capturedPieceName + "\n";
 					}
 
-					// notify the other player that this move was made, if they are a cpu or a
-					// remote
-					// player
-					if (!game.getPlayerWhite().isLocal() || !game.getPlayerBlack().isLocal()) {
-						chessBoardAction.sendMoveToOtherPlayer(fromX, fromY, toX, toY);
-					}
+
 					chessBoardAction.switchTurns(game.getPlayerWhite().isTurn(), captureMessage);
 
 					if (capturedPiece != null) {
 						pieceImagesViews.remove(capturedPiece);
 					}
-
-					if(playerInterface != null) {
-						playerInterface.signalMoveMade(new MoveProperties(captureMessage, capturedPiece));
-					}
-					
 					return new MoveProperties(captureMessage, capturedPiece);
+					
 				} else {
-					movingPiece.updateSquareLocation(fromX, fromY);
+					System.out.println("Something bad happened while remote player trying to make move...");
+					System.out.println("From (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
 					isCaptureMove = false;
 					capturedPieceName = null;
 					capturingPieceName = null;
 				}
+
 			}
 		}
 
 		return null;
 	}
-*/
-	
+
 	public MoveProperties cpuMakeMove(Player player) {
 
 		if (!game.isEnded() && player != null) {
@@ -359,22 +290,21 @@ public class ChessBoard {
 			int fromX = Math.abs(random.nextInt()) % Board.SQUARES_WIDE;
 			int fromY = Math.abs(random.nextInt()) % Board.SQUARES_HIGH;
 			boolean moveMade = false;
-			
+
 			if (player.isWhite()) {
 				System.out.println("White trying to go");
 			} else {
 				System.out.println("Black trying to go");
 			}
 
-
 			while (!moveMade && player.isTurn() && !game.isEnded()) {
-				
+
 				if (player.isWhite()) {
 					System.out.println("White is going");
 				} else {
 					System.out.println("Black is going");
 				}
-				
+
 				fromX = Math.abs(random.nextInt()) % Board.SQUARES_WIDE;
 				fromY = Math.abs(random.nextInt()) % Board.SQUARES_HIGH;
 				if (gameboard[fromY][fromX] != null && player.isWhite() == gameboard[fromY][fromX].isWhite()) {
@@ -400,7 +330,6 @@ public class ChessBoard {
 
 							PieceImageView movingPiece = getPieceImageView(fromX, fromY);
 
-							
 							moveMade = game.moveFullTurn(fromX, fromY, toX, toY);
 							if (moveMade) {
 								// successful move
@@ -423,14 +352,13 @@ public class ChessBoard {
 											+ capturedPieceName + "\n";
 								}
 
-
 								chessBoardAction.switchTurns(game.getPlayerWhite().isTurn(), captureMessage);
 
 								if (capturedPiece != null) {
 									pieceImagesViews.remove(capturedPiece);
 								}
 								return new MoveProperties(captureMessage, capturedPiece);
-								
+
 							} else {
 								movingPiece.updateSquareLocation(fromX, fromY);
 
@@ -443,12 +371,7 @@ public class ChessBoard {
 					}
 				}
 			}
-			
-/*			if(game.isEnded()) {
-				System.out.println("checkmate from chessboard");
-				return new MoveProperties("Checkmate", null);
-			}
-			*/
+
 		}
 
 		if (player.isWhite()) {
@@ -497,24 +420,23 @@ public class ChessBoard {
 	public void refreshPieces(AnchorPane parent) {
 
 		pieceImagesViews.forEach(piv -> {
-		
-			String imgLocation = (gameboard[piv.getSquareY()][piv.getSquareX()]).getImgLocation();	
-			
+
+			String imgLocation = (gameboard[piv.getSquareY()][piv.getSquareX()]).getImgLocation();
+
 			parent.getChildren().remove(piv);
-			
-			if(!piv.getImage().getUrl().matches("^.*" + imgLocation + "$")) {
+
+			if (!piv.getImage().getUrl().matches("^.*" + imgLocation + "$")) {
 				Image img = new Image(imgLocation, SQUARE_SIZE, SQUARE_SIZE, false, false);
 				piv.setImage(img);
-						
+
 			}
-			
+
 			parent.getChildren().add(piv);
 
 		});
 	}
-	
+
 	public void setPlayerInterface(PlayerInterface playerInterface) {
 		this.playerInterface = playerInterface;
 	}
 }
-

@@ -2,12 +2,13 @@ package network.threading;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import network.ChessDataPacket;
 import network.ChessHost;
 
 public class HostSendService extends Service<Object> {
 
 	private ChessHost chessHost;
-	private String msg;
+	private ChessDataPacket chessDataPacket;
 	
 	public HostSendService(ChessHost ch) {
 		this.chessHost = ch;
@@ -19,11 +20,16 @@ public class HostSendService extends Service<Object> {
 		return new Task<Object>() {
 
 			protected Object call() throws Exception {
-				if(msg != null) {
-					chessHost.write(msg);
+				if(chessDataPacket != null) {
+					// Create local var holding send packet and set packet = null to remove 
+					// potential for same message sent multiple times due to slow network 
+					// and user entering multiple commands quickly.
+					ChessDataPacket cdp = chessDataPacket;
+					chessDataPacket = null;
+
+					chessHost.write(cdp);
 				}
 				
-				msg = null;
 				
 				return null;
 			}
@@ -32,8 +38,7 @@ public class HostSendService extends Service<Object> {
 
 	}
 
-	public void setText(String str) {
-		this.msg = str;
+	public void setChessDataPacket(ChessDataPacket cdp) {
+		this.chessDataPacket = cdp;
 	}
-	
 }

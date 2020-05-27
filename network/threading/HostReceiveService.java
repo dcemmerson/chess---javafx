@@ -2,9 +2,10 @@ package network.threading;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import network.ChessDataPacket;
 import network.ChessHost;
 
-public class HostReceiveService extends Service<String> {
+public class HostReceiveService extends Service<ChessDataPacket> {
 
 	private ChessHost chessHost;
 	
@@ -12,12 +13,12 @@ public class HostReceiveService extends Service<String> {
 		this.chessHost = ch;
 	}
 	
-	protected Task<String> createTask() {
+	protected Task<ChessDataPacket> createTask() {
 
-		return new Task<String>() {
+		return new Task<ChessDataPacket>() {
 
 			@Override
-			protected String call() throws Exception {
+			protected ChessDataPacket call() throws Exception {
 				return chessHost.readLine();
 			}
 			

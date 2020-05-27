@@ -11,6 +11,7 @@ public class HostConnectService extends Service<Object> {
 	protected ChessHost chessHost;
 	protected String port;
 	protected boolean server;
+	protected String username;
 	
 	@Override
 	protected Task<Object> createTask() {

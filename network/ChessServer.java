@@ -10,9 +10,10 @@ public class ChessServer extends ChessHost {
 
 	int port;
 	
-	public ChessServer(String port) {
+	public ChessServer(String port, String username) {
 		this.port = Integer.parseInt(port);
 		this.host = "localhost";
+		this.username = username;
 	}
 
 	public void closeSocket() throws IOException {
@@ -26,14 +27,14 @@ public class ChessServer extends ChessHost {
 			socket = null;
 		}
 		
-		if(in != null) {
-			in.close();
-			in = null;
+		if(ois != null) {
+			ois.close();
+			ois = null;
 		}
 		
-		if(out != null) {
-			out.close();
-			out = null;
+		if(oos != null) {
+			oos.close();
+			oos = null;
 		}
 	}
 	
@@ -45,11 +46,11 @@ public class ChessServer extends ChessHost {
 			Socket clientSocket = serverSocket.accept();
 			this.socket = clientSocket;
 
-			PrintWriterSocket out = new PrintWriterSocket(clientSocket);
-			this.out = out;
+			ObjectOutputStreamSocket oos = new ObjectOutputStreamSocket(clientSocket);
+			this.oos = oos;
 
-			BufferedReaderSocket in = new BufferedReaderSocket(clientSocket);
-			this.in = in;
+			ObjectInputStreamSocket ois = new ObjectInputStreamSocket(clientSocket);
+			this.ois = ois;
 
 		} catch (IOException e) {
 			System.out.println(e);

@@ -5,20 +5,21 @@ import java.net.Socket;
 
 public class ChessClient extends ChessHost {
 
-	public ChessClient(String host, String port) {
+	public ChessClient(String host, String port, String username) {
 		this.host = host;
 		this.port = Integer.parseInt(port);
+		this.username = username;
 	}
 
 	public boolean connect() {
 		try {
 			Socket s = new Socket(this.host, this.port);
-			PrintWriterSocket out = new PrintWriterSocket(s);
-			BufferedReaderSocket in = new BufferedReaderSocket(s);
+			ObjectOutputStreamSocket oos = new ObjectOutputStreamSocket(s);
+			ObjectInputStreamSocket ois = new ObjectInputStreamSocket(s);
 
 			this.socket = s;
-			this.out = out;
-			this.in = in;
+			this.oos = oos;
+			this.ois = ois;
 			return true;
 
 		} catch (IOException e) {
