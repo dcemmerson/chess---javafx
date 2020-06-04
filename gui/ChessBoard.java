@@ -173,7 +173,9 @@ public class ChessBoard {
 						int toX = (int) (e.getX() / SQUARE_SIZE);
 						int toY = (int) (e.getY() / SQUARE_SIZE);
 
-						if (board.getBoard()[toY][toX] != null) {
+						// Set capture move before calling moveFullTurn, otherwise we will not know
+						// if moving piece is trying to capture other player's piece.
+						if (toX >= 0 && toX <= 7 && toY >= 0 && toY <= 7 && board.getBoard()[toY][toX] != null) {
 							isCaptureMove = true;
 							capturedPieceName = board.getBoard()[toY][toX].getName();
 							capturingPieceName = board.getBoard()[fromY][fromX].getName();
