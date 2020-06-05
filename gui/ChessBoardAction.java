@@ -8,5 +8,4 @@ public interface ChessBoardAction {
 	public void switchTurns(boolean isWhiteTurn, String captureMessage);
 	public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY);
 	public void refresh();
-	public void displayMessage(String captureMessage);
 }
