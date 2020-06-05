@@ -42,8 +42,6 @@ public class ChessBoard {
 
 	private PlayerInterface playerInterface;
 
-//	private ChessBoardCanvas chessBoardCanvas;
-
 	public ChessBoard(Game game, Canvas canvas, ChessBoardAction cba) {
 		this.random = new Random();
 
@@ -59,16 +57,7 @@ public class ChessBoard {
 		ChessBoard.SQUARE_SIZE = (int) (chessCanvas.getHeight() / Board.SQUARES_HIGH);
 
 		drawBoard();
-//		addPieceActionListeners();
-
-//		cpuStartMove();
-
-//		initializeCanvasActionListener();
 	}
-
-//	public void setChessBoardCanvas(ChessBoardCanvas cbc) {
-//		this.chessBoardCanvas = cbc;
-//	}
 
 	public void drawBoard() {
 		Color color;

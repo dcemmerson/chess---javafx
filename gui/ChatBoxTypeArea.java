@@ -46,5 +46,9 @@ public class ChatBoxTypeArea extends BorderPane {
 		});
 		
 	}
+	
+	public TextArea getTextArea() {
+		return this.textArea;
+	}
 
 }

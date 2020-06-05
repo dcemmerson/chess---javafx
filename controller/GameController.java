@@ -63,7 +63,6 @@ public class GameController {
 				}
 
 				chatMsg = str;
-//				mainActions.appendToChatBox(str, isWhiteTurn);
 			}
 
 			@Override
@@ -84,6 +83,7 @@ public class GameController {
 
 		});
 
+		// now fire off threads depending upon on game type - local, cpus, remote
 		if (game.getPlayerWhite().isLocal() && !game.getPlayerWhite().isCpu()) {
 			player1MS = new LocalPlayerMoveService(game, chessboard, game.getPlayerWhite(), lock);
 
@@ -116,12 +116,17 @@ public class GameController {
 		
 		if(player1MS != null) {
 			player1MS.setOnSucceeded(endMoveHandler(player1MS, true));
+			player1MS.setOnFailed(moveFailHandler(player1MS, true));
+
 			player1MS.start();
 		}
 		if(player2MS != null){
 			player2MS.setOnSucceeded(endMoveHandler(player2MS, true));
+			player2MS.setOnFailed(moveFailHandler(player2MS, true));
 			player2MS.start();
 		}
+		
+		displayInitialStartMessage();
 	}
 
 
@@ -169,7 +174,52 @@ public class GameController {
 		};
 
 	}
+	
+	private EventHandler<WorkerStateEvent> moveFailHandler(MoveService ms, boolean restart) {
+		return new EventHandler<WorkerStateEvent>() {
 
+			@Override
+			public void handle(WorkerStateEvent wse) {
+
+				MoveProperties mp = (MoveProperties) wse.getSource().getValue();
+
+				if (mp != null) {
+					String str = "";
+
+					if(mp.getMsg() != null) {
+						str += mp.getMsg();
+					}
+					
+					if (!game.isEnded()) {
+						if (game.getPlayerWhite().isTurn()) {
+							str += "White's turn\n";
+						} else {
+							str += "Black's turn\n";
+						}
+					}
+					
+					mainActions.appendToChatBox(str);
+					if(mp != null) {
+						mainActions.sendMoveToRemotePlayer(mp.getFromX(), mp.getFromY(), mp.getToX(), mp.getToY());
+						// remove captured piece off board, if piece was captured
+						if (mp.getPiv() != null) {
+							mp.getPiv().setOnBoard(false);
+
+							chessBoardAnchorPane.getChildren().remove(mp.getPiv());
+						}
+					}
+					
+					chessboard.refreshPieces(chessBoardAnchorPane);
+				}
+
+				if (!game.isEnded() && restart) {
+					ms.restart();
+				}
+			}
+		};
+
+	}
+	
 	public void receiveMoveFromRemotePlayer(int fromX, int fromY, int toX, int toY) {
 		Player p;
 		

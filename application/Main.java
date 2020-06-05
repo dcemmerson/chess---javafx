@@ -14,9 +14,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			sc = new ScreenController(primaryStage);
-			sc.addScreenActive("start", "/fxml/startWindow.fxml", "/fxml/styles/mainStyles.css");
+			sc.addScreenActive("Start", "/fxml/startWindow.fxml", "/fxml/styles/mainStyles.css");
 			
-			sc.activate("start", null);
+			sc.activate("Start", null);
 
 			loadScenes();
 
@@ -29,6 +29,7 @@ public class Main extends Application {
 		//chess main screen
 		
 		sc.addScreenInactive("Chess", "/fxml/chessWindow.fxml", "/fxml/styles/mainStyles.css");
+		sc.addScreenInactive("StartLocal", "/fxml/startLocalWindow.fxml", "/fxml/styles/mainStyles.css");
 		sc.addScreenInactive("Network", "/fxml/networkWindow.fxml", "/fxml/styles/mainStyles.css");
 
 	}

@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.TextFlow;
 
-public class StartController extends Controller implements Initializable {
+public class StartLocalController extends Controller implements Initializable {
 
 	@FXML
 	private Button startLocalButton;
@@ -23,17 +23,29 @@ public class StartController extends Controller implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
 	}
-
 	@FXML
-	private void handleStartRemoteButton(ActionEvent event) {
-		screen.changeScreens("Network", false, false);
+	private void handleStartCpuVsCpuButton(ActionEvent event) {
+		GameType gt = new GameType(true, true, true, true);
+		screen.changeScreens("Chess", gt, false, false);
 	}
 
+	@FXML
+	private void handleStartLocal1PlayerButton(ActionEvent event) {
+		GameType gt = new GameType(true, true, false, true);
+		screen.changeScreens("Chess", gt, false, false);
+	}
+	
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
-		screen.changeScreens("StartLocal", null, false, false);		
+		GameType gt = new GameType(true, true, false, false);
+		screen.changeScreens("Chess", gt, false, false);	
 	}
 
+	@FXML
+	private void handleGoBackButton(ActionEvent event) throws IOException {		
+		screen.changeScreens("Start", null, false, false);	
+	}
+	
 	private void disableButtons() {
 		startLocalButton.setDisable(true);
 		startRemoteButton.setDisable(true);

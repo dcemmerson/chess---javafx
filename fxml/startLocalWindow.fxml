@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StartLocalController">
+   <center>
+      <HBox maxHeight="60.0" maxWidth="600.0" prefHeight="60.0" prefWidth="633.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startLocalButton" mnemonicParsing="false" onAction="#handleStartLocalButton" text="Local 2 Player">
+               <HBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </HBox.margin>
+            </Button>
+             <Button fx:id="startLocal1PlayerButton" mnemonicParsing="false" onAction="#handleStartLocal1PlayerButton" text="1 Player vs CPU">
+               <HBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="startCpuVsCpuButton" mnemonicParsing="false" onAction="#handleStartCpuVsCpuButton" text="Cpu vs Cpu">
+               <HBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleGoBackButton" text="Go back">
+               <HBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>

@@ -70,12 +70,18 @@ public class MainController extends Controller implements Initializable {
 		this.chatSplitPane.getItems().add(chatBox);
 		this.chatBoxTypeArea = new ChatBoxTypeArea(mainActions, args.isP1Local(), username);
 		this.chatSplitPane.getItems().add(chatBoxTypeArea);
-
+		
 		Game game = new Game(args.isP1Local(), args.isP2Local(), args.isP1IsCpu(), args.isP2IsCpu());
 
 		this.gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, mainActions);
 
 		setStageBehavior();
+		
+		//disable chat type area unless this is a remote 2 player game
+		if(args.isP1Local() && args.isP2Local()) {
+			this.chatBoxTypeArea.setDisable(true);
+			this.chatBoxTypeArea.getTextArea().setText("Chat type area disabled in local mode.");;
+		}
 
 	}
 
@@ -94,7 +100,7 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	public void quitGame() {
 		gameController.endGame();
-		screen.changeScreens("start", null, true, false);
+		screen.changeScreens("Start", null, true, false);
 	}
 
 	@FXML
