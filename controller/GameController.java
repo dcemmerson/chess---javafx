@@ -20,6 +20,9 @@ import threading.RemoteMoveService;
 
 public class GameController {
 
+	static String WHITE_TURN = "White's turn\n";
+	static String BLACK_TURN = "Black's turn";
+	
 	private AnchorPane chessBoardAnchorPane;
 	private ChessBoard chessboard;
 	private MainActions mainActions;
@@ -35,17 +38,13 @@ public class GameController {
 		this.chessBoardAnchorPane = chessBoardAnchorPane;
 		this.mainActions = mainActions;
 		this.game = game;
-
+		
 		this.chessboard = new ChessBoard(game, chessCanvas, new ChessBoardAction() {
 
 			public void addImage(ImageView img, int x, int y) {
 				img.setLayoutX(x);
 				img.setLayoutY(y);
 				chessBoardAnchorPane.getChildren().add(img);
-			}
-
-			public void movePiece(ImageView img, int x, int y) {
-				System.out.println("abc");
 			}
 
 			public void removeImage(PieceImageView img) {
@@ -57,9 +56,9 @@ public class GameController {
 				String str = captureMessage;
 
 				if (isWhiteTurn) {
-					str += "White's turn\n";
+					str += WHITE_TURN;
 				} else {
-					str += "Black's turn\n";
+					str += WHITE_TURN;
 				}
 
 				chatMsg = str;
@@ -82,6 +81,8 @@ public class GameController {
 			}
 
 		});
+
+		displayInitialStartMessage();
 
 		// now fire off threads depending upon on game type - local, cpus, remote
 		if (game.getPlayerWhite().isLocal() && !game.getPlayerWhite().isCpu()) {
@@ -126,9 +127,11 @@ public class GameController {
 			player2MS.start();
 		}
 		
-		displayInitialStartMessage();
 	}
 
+	private void displayInitialStartMessage() {
+		mainActions.appendToChatBox(WHITE_TURN);
+	}
 
 
 	private EventHandler<WorkerStateEvent> endMoveHandler(MoveService ms, boolean restart) {
