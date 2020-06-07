@@ -30,6 +30,7 @@ public class GameController {
 
 	private MoveService player1MS;
 	private MoveService player2MS;
+	private boolean notifiedGameOver;
 
 	private String chatMsg;
 	private final Lock lock = new ReentrantLock();
@@ -38,6 +39,7 @@ public class GameController {
 		this.chessBoardAnchorPane = chessBoardAnchorPane;
 		this.mainActions = mainActions;
 		this.game = game;
+		this.notifiedGameOver = false;
 
 		this.chessboard = new ChessBoard(game, chessCanvas, defineChessBoardActions(chessCanvas));
 
@@ -50,31 +52,19 @@ public class GameController {
 		mainActions.appendToChatBox(WHITE_TURN);
 	}
 
-	private EventHandler<WorkerStateEvent> endMoveHandler(MoveService ms, boolean restart) {
+	private EventHandler<WorkerStateEvent> endMoveHandler(MoveService ms, boolean localPlayer) {
 		return new EventHandler<WorkerStateEvent>() {
 
 			@Override
 			public void handle(WorkerStateEvent wse) {
-
+				System.out.println("success event handler");
 				MoveProperties mp = (MoveProperties) wse.getSource().getValue();
+				String str = "";
 
 				if (mp != null) {
-					String str = "";
-
 					if (mp.getMsg() != null) {
 						str += mp.getMsg();
 					}
-
-					if (!game.isEnded()) {
-						if (game.getPlayerWhite().isTurn()) {
-							str += "White's turn\n";
-						} else {
-							str += "Black's turn\n";
-						}
-					}
-
-					mainActions.appendToChatBox(str);
-					mainActions.sendMoveToRemotePlayer(mp.getFromX(), mp.getFromY(), mp.getToX(), mp.getToY());
 
 					// remove captured piece off board, if piece was captured
 					if (mp.getPiv() != null) {
@@ -82,11 +72,40 @@ public class GameController {
 
 						chessBoardAnchorPane.getChildren().remove(mp.getPiv());
 					}
-
-					chessboard.refreshPieces(chessBoardAnchorPane);
+				
+					if(localPlayer) {
+						mainActions.sendMoveToRemotePlayer(mp.getFromX(), mp.getFromY(), mp.getToX(), mp.getToY());
+					}
+				}
+				
+				// If game has not ended, display whose turn is next, else, display who won.
+				if (!game.isEnded()) {
+					System.out.println("display next player turn exec");
+					if (game.getPlayerWhite().isTurn()) {
+						str += "White's turn\n";
+					} else {
+						str += "Black's turn\n";
+					}
+				} else if (!notifiedGameOver) {
+					notifiedGameOver = true;
+					str += "Game over!\n";
+					if (game.getPlayerWhite().isTurn()) {
+						str += "Black wins\n";
+					} else {
+						str += "White wins\n";
+					}
 				}
 
-				if (!game.isEnded() && restart) {
+				//If str is not empty, then we have text we need to append to chat box area.
+				if(str != "") {
+					mainActions.appendToChatBox(str);
+				}
+				
+
+				chessboard.refreshPieces(chessBoardAnchorPane);
+				
+				if (!game.isEnded() && localPlayer) {
+					System.out.println("restarting thread");
 					ms.restart();
 				}
 			}
@@ -99,7 +118,7 @@ public class GameController {
 
 			@Override
 			public void handle(WorkerStateEvent wse) {
-
+				System.out.println("fail event handler");
 				MoveProperties mp = (MoveProperties) wse.getSource().getValue();
 
 				if (mp != null) {
@@ -198,7 +217,6 @@ public class GameController {
 		if (player1MS != null) {
 			player1MS.setOnSucceeded(endMoveHandler(player1MS, true));
 			player1MS.setOnFailed(moveFailHandler(player1MS, true));
-
 			player1MS.start();
 		}
 		if (player2MS != null) {
@@ -207,7 +225,7 @@ public class GameController {
 			player2MS.start();
 		}
 	}
-	
+
 	private ChessBoardAction defineChessBoardActions(Canvas chessCanvas) {
 		return new ChessBoardAction() {
 

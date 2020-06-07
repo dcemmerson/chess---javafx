@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import controller.ScreenController;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -13,13 +14,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			primaryStage.getIcons().add(new Image("gui/images/pawn_black.png"));
 			sc = new ScreenController(primaryStage);
 			sc.addScreenActive("Start", "/fxml/startWindow.fxml", "/fxml/styles/mainStyles.css");
 			
 			sc.activate("Start", null);
 
 			loadScenes();
-
 			
 		} catch(Exception e) {
 			e.printStackTrace();

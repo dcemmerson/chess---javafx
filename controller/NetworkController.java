@@ -32,10 +32,6 @@ public class NetworkController extends Controller implements Runnable {
 	public static String CHAT_ENDLINE_REGEX = "(" + NetworkController.CHAT_ENDLINE + ")?+$";
 	public static String CHESSMOVE_ENDLINE_REGEX_ = "(" + NetworkController.CHESSMOVE_ENDLINE + ")?+$";
 
-//	private ChessClient chessClient;
-//	private ChessServer chessServer;
-//	private ChessHost chessHost;
-
 	private MainActions mainActions;
 
 	private HostSendService hss;
@@ -58,7 +54,6 @@ public class NetworkController extends Controller implements Runnable {
 	private TextFlow headerText;
 
 	public NetworkController() {
-		System.out.println("default constr");
 	}
 
 	public NetworkController(ChessHost ch, MainActions ma) {
@@ -66,6 +61,11 @@ public class NetworkController extends Controller implements Runnable {
 		this.startNetworkServices(ch);
 	}
 
+	public void endNetworkServices() {
+		this.hss.endService();
+		this.hrs.endService();
+	}
+	
 	private void startNetworkServices(ChessHost ch) {
 		this.hss = new HostSendService(ch);
 		this.hrs = new HostReceiveService(ch);
@@ -225,9 +225,8 @@ public class NetworkController extends Controller implements Runnable {
 					} else {
 						gt = new GameType(false, true, false, false);
 					}
-//					startNetworkServices((ChessHost) wse.getSource().getValue());
 
-					screen.changeScreens("Chess", gt, ch, false, false);
+					screen.changeScreens("Chess", gt, ch, true, true);
 				} else {
 					try {
 						ch.closeSocket();
@@ -258,7 +257,6 @@ public class NetworkController extends Controller implements Runnable {
 			@Override
 			public void handle(WorkerStateEvent wse) {
 				System.out.println("failed in " + Thread.currentThread().getName());
-				ChessHost ch = (ChessHost) wse.getSource().getValue();
 				hcs.cancel();
 
 				connectButton.setDisable(false);
@@ -275,5 +273,5 @@ public class NetworkController extends Controller implements Runnable {
 	public void setMainActions(MainActions ma) {
 		this.mainActions = ma;
 	}
-
+	
 }

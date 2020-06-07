@@ -21,19 +21,6 @@ public class ObjectInputStreamSocket extends ObjectInputStream {
 		}
 
 		return cdp;
-		
-		/*
-		String str = "";
-		String s[] = new String[NUMBER_SUBSTRINGS];
-		
-		
-		while(!str.contains(NetworkController.ENDLINE)) {
-			str += (char)read();
-		}
-*/	
-//		s = str.split(NetworkController.ENDLINE_REGEX, NUMBER_SUBSTRINGS);
-//		System.out.println("line read: " + s[0]);
-//		return s[0];
 
 	}
 	

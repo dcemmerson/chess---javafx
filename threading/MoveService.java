@@ -16,7 +16,6 @@ public class MoveService extends Service<Object> {
 	protected final Player player;
 	protected final ChessBoard chessboard;
 	protected final ReentrantLock lock;
-//	boolean obtainedLock = false;
 	MoveProperties mp;
 	
 	public MoveService(Game g, ChessBoard cb, Player p, Lock l) {
@@ -46,25 +45,5 @@ public class MoveService extends Service<Object> {
 		};
 
 	}
-
-	protected String getGameOverMsg() {
-		String str = "Game over!\n";
-		
-		// If it's white's turn and we got here, that means white has no moves and is in checkmate.
-		if(game.isStalemate()){
-			str += "Stalemate";
-			System.out.println("stalemate from moveservice");
-		}
-		else {
-			if(player.isWhite()) {
-				str += "Black wins!\n";
-			}
-			else {
-				str += "White wins!\n";
-			}
-		}		
-		return str;
-	}
-
 	
 }

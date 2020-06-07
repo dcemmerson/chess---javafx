@@ -28,12 +28,6 @@ public class LocalPlayerMoveService extends MoveService {
 					lock.unlock();
 					Thread.sleep(500);
 				}
-				else {
-					
-					String gameOverStr = getGameOverMsg();
-
-					mp = new MoveProperties(gameOverStr, null);
-				}
 
 			}
 			
@@ -46,12 +40,12 @@ public class LocalPlayerMoveService extends MoveService {
 					Thread.sleep(100);
 				}
 			}
-			else {
+/*			else {
 				String gameOverStr = getGameOverMsg();
 
 				mp = new MoveProperties(gameOverStr, null);
 			}
-			
+*/			
 		} catch (InterruptedException e) {
 			System.out.println("Thread sleep interrupted.");
 		} finally {

@@ -36,9 +36,9 @@ public class CpuMoveService extends MoveService {
 			}
 			else {
 				
-				String gameOverStr = getGameOverMsg();
+//				String gameOverStr = getGameOverMsg();
 
-				mp = new MoveProperties(gameOverStr, null);
+//				mp = new MoveProperties(gameOverStr, null);
 			}
 
 		} catch (InterruptedException e) {

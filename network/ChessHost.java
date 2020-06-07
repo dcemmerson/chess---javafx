@@ -9,8 +9,6 @@ public class ChessHost {
 	protected String host;
 	protected int port;
 	protected Socket socket;
-//	protected PrintWriterSocket out;
-//	protected BufferedReaderSocket in;
 	protected ObjectOutputStreamSocket oos;
 	protected ObjectInputStreamSocket ois;
 

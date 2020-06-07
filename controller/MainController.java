@@ -64,7 +64,6 @@ public class MainController extends Controller implements Initializable {
 		MainActions mainActions = defineMainActions();
 		this.screen = screen;
 		this.stage = primaryStage;
-//		this.networkController = null;
 
 		this.chatBox = new ChatScrollPane();
 		this.chatSplitPane.getItems().add(chatBox);
@@ -100,6 +99,7 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	public void quitGame() {
 		gameController.endGame();
+		networkController.endNetworkServices();
 		screen.changeScreens("Start", null, true, false);
 	}
 
@@ -166,7 +166,6 @@ public class MainController extends Controller implements Initializable {
 			
 			@Override
 			public void receiveChessDataPacket(ChessDataPacket cdp) {
-				System.out.println("receive move");
 				if(cdp.isMessage()) {
 					receiveText(cdp.getMessage());
 				}
@@ -203,7 +202,6 @@ public class MainController extends Controller implements Initializable {
 				height = 100;
 			}
 			chessboardTopArea.setMaxHeight(height);
-//			chatSplitPane.setDividerPosition(0, 1 - (chatBoxTypeArea.getHeight() / chatSplitPane.getHeight()));
 		});
 	}
 }

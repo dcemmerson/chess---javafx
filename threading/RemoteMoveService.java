@@ -31,7 +31,6 @@ public class RemoteMoveService extends MoveService {
 
 				lock.lock();
 
-				
 				if (!player.isTurn()) {
 					lock.unlock();
 					Thread.sleep(200);
@@ -41,13 +40,12 @@ public class RemoteMoveService extends MoveService {
 			}
 			if (!game.isEnded()) {
 				mp = chessboard.remotePlayerMakeMove(player, this.fromX, this.fromY, this.toX, this.toY);
-				System.out.println("after chessboard cpumakemove");
 			}
 			else {
 				
-				String gameOverStr = getGameOverMsg();
+//				String gameOverStr = getGameOverMsg();
 
-				mp = new MoveProperties(gameOverStr, null);
+//				mp = new MoveProperties(gameOverStr, null);
 			}
 
 		} catch (InterruptedException e) {

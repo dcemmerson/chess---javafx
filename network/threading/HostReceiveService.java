@@ -1,5 +1,7 @@
 package network.threading;
 
+import java.io.IOException;
+
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import network.ChessDataPacket;
@@ -25,6 +27,13 @@ public class HostReceiveService extends Service<ChessDataPacket> {
 		};
 
 	}
-
-
+	
+	public void endService() {
+		try {
+			chessHost.closeSocket();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Unable to close socket.");
+		}
+	}
 }

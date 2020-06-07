@@ -17,7 +17,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import testing.BoardMovement;
 
 public class ChessBoard {
 	private final Color COLOR_1 = Color.BLUE;
@@ -178,8 +177,6 @@ public class ChessBoard {
 							// 4. update whose turn it is on the gui using cba interface
 							PieceImageView capturedPiece = getPieceImageView(toX, toY);
 
-							// removeCapturedPiece(toX, toY);
-
 							piv.updateSquareLocation(toX, toY);
 
 							// if now player white turn is true, that means black just made move. Else white
@@ -282,19 +279,7 @@ public class ChessBoard {
 			int fromY = Math.abs(random.nextInt()) % Board.SQUARES_HIGH;
 			boolean moveMade = false;
 
-			if (player.isWhite()) {
-				System.out.println("White trying to go");
-			} else {
-				System.out.println("Black trying to go");
-			}
-
 			while (!moveMade && player.isTurn() && !game.isEnded()) {
-
-				if (player.isWhite()) {
-					System.out.println("White is going");
-				} else {
-					System.out.println("Black is going");
-				}
 
 				fromX = Math.abs(random.nextInt()) % Board.SQUARES_WIDE;
 				fromY = Math.abs(random.nextInt()) % Board.SQUARES_HIGH;
@@ -330,7 +315,6 @@ public class ChessBoard {
 								// 4. update whose turn it is on the gui using cba interface
 								PieceImageView capturedPiece = getPieceImageView(toX, toY);
 
-//								removeCapturedPiece(toX, toY);
 								movingPiece.updateSquareLocation(toX, toY);
 
 								// if now player white turn is true, that means black just made move. Else white
@@ -364,12 +348,7 @@ public class ChessBoard {
 			}
 
 		}
-
-		if (player.isWhite()) {
-			System.out.println("White isnt going");
-		} else {
-			System.out.println("Black isnt going");
-		}
+		
 		return null;
 	}
 
