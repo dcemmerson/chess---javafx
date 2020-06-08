@@ -5,22 +5,19 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class ObjectInputStreamSocket extends ObjectInputStream {
-	public static int NUMBER_SUBSTRINGS = 2;
 	
-	public ObjectInputStreamSocket(Socket s) throws IOException{
+	public ObjectInputStreamSocket(Socket s) throws IOException {
 		super(s.getInputStream());
 	}
 	
 	public ChessDataPacket readCdpSocket() {
 		
-		ChessDataPacket cdp = null;
 		try {
-			cdp = (ChessDataPacket)readObject();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+			return (ChessDataPacket)readObject();
+		} catch (ClassNotFoundException | IOException e) {			
+			// return ChessDataPacket with connectionLost flag set to true
+			return new ChessDataPacket(true);
 		}
-
-		return cdp;
 
 	}
 	

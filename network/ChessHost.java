@@ -1,5 +1,6 @@
 package network;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -46,8 +47,7 @@ public class ChessHost {
 	}
 
 	public ChessDataPacket readLine() {
-		ChessDataPacket cdp = ois.readCdpSocket();
-		return cdp;
+		return ois.readCdpSocket();
 	}
 	
 	public String getUserName() {

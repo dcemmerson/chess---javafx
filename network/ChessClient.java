@@ -28,12 +28,5 @@ public class ChessClient extends ChessHost {
 			return false;
 		}
 	}
-	/*
-	 * public void listen() throws IOException { String fromServer;
-	 * 
-	 * while((fromServer = in.readLine()) != null) { System.out.println("Server: " +
-	 * fromServer); }
-	 * 
-	 * }
-	 */
+
 }

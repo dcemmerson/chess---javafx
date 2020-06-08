@@ -12,17 +12,39 @@ public class ChessDataPacket implements Serializable {
 	private ChessMove chessMove;
 	private boolean isMessage;
 	private String message;
+	private boolean connectionLost;
+	private boolean opponentResigned;
 	
 	public ChessDataPacket(int fromX, int fromY, int toX, int toY) {
 		this.chessMove = new ChessMove(fromX, fromY, toX, toY);
 		this.isMove = true;
 		this.isMessage = false;
+		this.connectionLost = false;
+		this.opponentResigned = false;
+
 	}
 	
 	public ChessDataPacket(String str) {
 		this.message = str;
 		this.isMove = false;
 		this.isMessage = true;
+		this.connectionLost = false;
+		this.opponentResigned = false;
+
+	}
+	public ChessDataPacket(boolean connectionLost) {
+		this.message = null;
+		this.isMove = false;
+		this.isMessage = false;
+		this.connectionLost = connectionLost;
+	}
+	public ChessDataPacket() {
+		this.message = null;
+		this.isMove = false;
+		this.isMessage = false;
+		this.connectionLost = false;
+		this.opponentResigned = false;
+
 	}
 	
 	public boolean isMove() {
@@ -55,5 +77,17 @@ public class ChessDataPacket implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public boolean connectionLost() {
+		return connectionLost;
+	}
+	
+	public void setOpponentResigned(boolean resigned) {
+		this.opponentResigned = resigned;
+	}
+	
+	public boolean isOpponentResigned() {
+		return this.opponentResigned;
 	}
 }

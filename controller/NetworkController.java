@@ -24,7 +24,7 @@ import network.threading.ServerConnectService;
 public class NetworkController extends Controller implements Runnable {
 	static int PORT_MIN = 1024;
 	static int PORT_MAX = 65535;
-	
+
 	public static String ENDLINE = "\n..\n";
 	public static String CHAT_ENDLINE = "\n.CHAT.\n";
 	public static String CHESSMOVE_ENDLINE = "\n.CHESSMOVE.\n";
@@ -62,10 +62,22 @@ public class NetworkController extends Controller implements Runnable {
 	}
 
 	public void endNetworkServices() {
-		this.hss.endService();
 		this.hrs.endService();
+		
+		ChessDataPacket cdp = new ChessDataPacket();
+		cdp.setOpponentResigned(true);
+		this.write(cdp);
+		
+		hss.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent wse) {
+				hss.endService();
+
+			}
+		});
+
 	}
-	
+
 	private void startNetworkServices(ChessHost ch) {
 		this.hss = new HostSendService(ch);
 		this.hrs = new HostReceiveService(ch);
@@ -76,7 +88,14 @@ public class NetworkController extends Controller implements Runnable {
 			public void handle(WorkerStateEvent wse) {
 				ChessDataPacket cdp = (ChessDataPacket) wse.getSource().getValue();
 				mainActions.receiveChessDataPacket(cdp);
-				hrs.restart();
+
+				if(!cdp.connectionLost() && !cdp.isOpponentResigned()) {
+					hrs.restart();
+				}
+				else { //close socket and end services if running
+					hrs.endService();
+					hss.endService();
+				}
 			}
 
 		});
@@ -93,7 +112,7 @@ public class NetworkController extends Controller implements Runnable {
 	@FXML
 	public void tryConnecting(ActionEvent e) {
 		clearInvalidSocketMessage();
-		
+
 		if (validInputs()) {
 			connect();
 		}
@@ -110,77 +129,72 @@ public class NetworkController extends Controller implements Runnable {
 		}
 	}
 
-
 	private boolean validUsername() {
-		if(username.getText().trim().equals("")) {
+		if (username.getText().trim().equals("")) {
 			username.setStyle("-fx-background-color: #ff0000");
 			return false;
 		}
 		return true;
 	}
-	
+
 	private void clearInvalidSocketMessage() {
 		myPort.setStyle("-fx-background-color: #ffffff");
 		remotePort.setStyle("-fx-background-color: #ffffff");
 		username.setStyle("-fx-background-color: #ffffff");
 		remoteIpAddress.setStyle("-fx-background-color: #ffffff");
 	}
-	
+
 	private boolean validInputs() {
 		boolean mPortVal = false;
 		boolean rPortVal = false;
 		boolean ipAddrVal = false;
-		
-		try {			
+
+		try {
 			if (validPortNumber(Integer.parseInt(myPort.getText().trim()))) {
 				mPortVal = true;
-			}
-			else {
+			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException e) {
 			mPortVal = false;
 			myPort.setStyle("-fx-background-color: #f00000");
 		}
-		
-		try {			
+
+		try {
 			if (validPortNumber(Integer.parseInt(remotePort.getText().trim()))) {
 				rPortVal = true;
-			}
-			else {
+			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException e) {
 			mPortVal = false;
 			remotePort.setStyle("-fx-background-color: #f00000");
 		}
-		
+
 		if (validIpAddr(remoteIpAddress.getText().trim())) {
 			ipAddrVal = true;
-		}
-		else {
+		} else {
 			remoteIpAddress.setStyle("-fx-background-color: #f00000");
 		}
 
 		return validUsername() && mPortVal && rPortVal && ipAddrVal;
 	}
-	
-	private boolean validIpAddr(String ipAddr) {
-		if(ipAddr.equalsIgnoreCase("localhost")) {
-			return true;
-		}
-		
-		//https://stackoverflow.com/questions/5667371/validate-ipv4-address-in-java
-	    String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
 
-	    return ipAddr.matches(PATTERN);
-	}
-	
-	private boolean validPortNumber(int port) {
-		if(port > PORT_MIN && port < PORT_MAX) {
+	private boolean validIpAddr(String ipAddr) {
+		if (ipAddr.equalsIgnoreCase("localhost")) {
 			return true;
 		}
-		else {
+
+		// https://stackoverflow.com/questions/5667371/validate-ipv4-address-in-java
+		String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
+
+		return ipAddr.matches(PATTERN);
+	}
+
+	private boolean validPortNumber(int port) {
+		if (port > PORT_MIN && port < PORT_MAX) {
+			return true;
+		} else {
 			return false;
 		}
 	}
@@ -273,5 +287,5 @@ public class NetworkController extends Controller implements Runnable {
 	public void setMainActions(MainActions ma) {
 		this.mainActions = ma;
 	}
-	
+
 }

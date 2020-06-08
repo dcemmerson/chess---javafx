@@ -177,8 +177,13 @@ public class GameController {
 
 	public void endGame() {
 		game.setEnded(true);
-		player1MS.cancel();
-		player2MS.cancel();
+		if(player1MS != null) {
+			player1MS.cancel();
+		}
+		if(player2MS != null) {
+			player2MS.cancel();
+		}
+		
 		player1MS = null;
 		player2MS = null;
 	}

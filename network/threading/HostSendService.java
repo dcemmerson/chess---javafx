@@ -32,7 +32,6 @@ public class HostSendService extends Service<Object> {
 					chessHost.write(cdp);
 				}
 				
-				
 				return null;
 			}
 			

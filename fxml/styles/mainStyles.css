@@ -34,3 +34,8 @@
 #networkInfoPane {
 	-fx-background-color: rgba(0, 0, 0, 0.75);
 }
+
+#connectionLostPane {
+	-fx-background-color: rgba(0, 0, 0, 0.75);
+	
+}

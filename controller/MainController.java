@@ -3,6 +3,7 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 import data.Game;
 import gui.ChatBoxTypeArea;
 import gui.ChatScrollPane;
@@ -24,8 +25,8 @@ import utility.ChessMove;
 
 public class MainController extends Controller implements Initializable {
 
-//	@FXML
-//	private Canvas chessCanvas;
+	public static String OPPONENT_RESIGNED_MESSAGE = "Opponent has resigned.\nGame over.";
+	public static String CONNECTION_LOST_MESSAGE = "Remote connection lost.\nGame over.";
 
 	private Parent root;
 
@@ -51,14 +52,13 @@ public class MainController extends Controller implements Initializable {
 	private SplitPane chessSplitPane;
 	@FXML
 	private MenuItem close;
-
+	@FXML
+	private AnchorPane connectionLostPane;
+	
 	private GameController gameController;
 	private NetworkController networkController;
 
 	private String username;
-
-	// data
-//	private Game game;
 
 	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args) {
 		MainActions mainActions = defineMainActions();
@@ -99,7 +99,9 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	public void quitGame() {
 		gameController.endGame();
-		networkController.endNetworkServices();
+		if(networkController != null) {
+			networkController.endNetworkServices();
+		}
 		screen.changeScreens("Start", null, true, false);
 	}
 
@@ -166,15 +168,22 @@ public class MainController extends Controller implements Initializable {
 			
 			@Override
 			public void receiveChessDataPacket(ChessDataPacket cdp) {
-				if(cdp.isMessage()) {
-					receiveText(cdp.getMessage());
-				}
-				else if(cdp.isMove()) {
-					ChessMove cm = cdp.getChessMove();
-					gameController.receiveMoveFromRemotePlayer(cm.getFromX(), cm.getFromY(), cm.getToX(), cm.getToY());
+				if(cdp != null) {
+					if(cdp.isMessage()) {
+						receiveText(cdp.getMessage());
+					}
+					else if(cdp.isMove()) {
+						ChessMove cm = cdp.getChessMove();
+						gameController.receiveMoveFromRemotePlayer(cm.getFromX(), cm.getFromY(), cm.getToX(), cm.getToY());
+					}
+					else if(cdp.connectionLost() || cdp.isOpponentResigned()) {
+						receiveText(CONNECTION_LOST_MESSAGE);
+						chatBoxTypeArea.getTextArea().setText(CONNECTION_LOST_MESSAGE);
+						chatBoxTypeArea.getTextArea().setDisable(true);
+						connectionLostPane.toFront();
+					}
 				}
 			}
-
 			@Override
 			public void startGame(boolean player1IsRemote, boolean player2IsRemote) {
 				Game game = new Game(player1IsRemote, player2IsRemote, false, false);
@@ -186,6 +195,8 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void setStageBehavior() {
+		connectionLostPane.toBack();
+		
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			double width = (stage.getWidth() - chessBoardAnchorPane.getWidth() - chatBox.getWidth()) / 2;
 			if (width > 100) {
