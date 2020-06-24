@@ -1,4 +1,4 @@
-/*	name: MainController
+/*	name: MainController.java
  *	last modified: 06/23/2020
  * 	description: Main controller used on chess board page. Provides 
  * 					interface for various components to communicate without

@@ -1,4 +1,4 @@
-/*	name: ScreenController
+/*	name: ScreenController.java
  *	last modified: 06/23/2020
  * 	description: Controller class for changing screens. Uses hashmap to
  * 					keep track of screen. Defines ChangeScreen interface

@@ -1,3 +1,9 @@
+/*	filename: Player.java
+ * 	description: Contains data relating to a player, including references
+ * 					to each Piece type and flags for if it is this player's
+ * 					turn, if this player has won, etc.
+ */
+
 package data;
 
 public class Player {

@@ -1,3 +1,7 @@
+/*	filename: ChessBoardAction.java
+ * 	description: Provide interface for ChessBoard class to communicate 
+ * 					back to GameController and MainController classes.
+ */
 package gui;
 
 import javafx.scene.image.ImageView;

@@ -1,4 +1,4 @@
-/*	name: NetworkController
+/*	name: NetworkController.java
  *	last modified: 06/23/2020
  * 	description: Controller class for Network scene and connecting hosts
  * 					via sockets as well as sending messages and game
