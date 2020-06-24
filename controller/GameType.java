@@ -1,3 +1,9 @@
+/*	filename: GameType.java
+ * 	last modified: 06/23/2020
+ * 	description: Simple helper class used to group and pass flags to indicate
+ * 					game type between screens on screen transitions.
+ */
+
 package controller;
 
 public class GameType {

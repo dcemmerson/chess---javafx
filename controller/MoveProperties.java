@@ -1,3 +1,9 @@
+/* 	filename: MoveProperties.java
+ * 	last modified: 06/23/2020
+ * 	description: Helper class used to pass information back from a MoveService
+ * 					thread to the onSucceeded/onFailed handlers.
+ */
+
 package controller;
 
 import gui.PieceImageView;

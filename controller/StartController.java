@@ -1,16 +1,18 @@
+/*	filename: StartController.java
+ *	last modified: 06/23/2020
+ * 	description: Controller class for start scene.
+ */
+
 package controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import data.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.text.TextFlow;
 
 public class StartController extends Controller implements Initializable {
 
@@ -24,21 +26,23 @@ public class StartController extends Controller implements Initializable {
 		
 	}
 
+	/*	name: handleStartRemoteButton
+	 * 	description: Handle event of user clicking to start a remote game.
+	 * 					Pass over screen name "Network", destroy=false,
+	 * 					and recreate=false to screen.changeScreens.
+	 */
 	@FXML
 	private void handleStartRemoteButton(ActionEvent event) {
 		screen.changeScreens("Network", false, false);
 	}
 
+	/*	name: handleStartRemoteButton
+	 * 	description: Handle event of user clicking to start a local game.
+	 * 					Pass over screen name "StartLocal", gametype=null,
+	 * 					 destroy=false, and recreate=false to screen.changeScreens.
+	 */
 	@FXML
 	private void handleStartLocalButton(ActionEvent event) throws IOException {		
 		screen.changeScreens("StartLocal", null, false, false);		
 	}
-
-	private void disableButtons() {
-		startLocalButton.setDisable(true);
-		startRemoteButton.setDisable(true);
-	}
-
-
-
 }

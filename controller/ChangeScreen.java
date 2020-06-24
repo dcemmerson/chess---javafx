@@ -1,3 +1,7 @@
+/*	name: ChangeScreen.java
+ * 	last modified: 06/23/2020
+ * 	description: Interface methods for changing scenes.
+ */
 package controller;
 
 import network.ChessHost;

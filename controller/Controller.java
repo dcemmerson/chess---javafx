@@ -1,3 +1,13 @@
+/*	name: Controller.java
+ * 	last modified: 06/23/2020
+ * 	description: Parent class for all other controller classes in this app.
+ * 					Using a parent Controller class for all other controller
+ * 					classes allows for simple scene changes, and to change 
+ * 					the controller class at the same time, without needing
+ * 					to rewrite new ScreenController.changeScreen methods
+ * 					for every page.
+ */
+
 package controller;
 
 import java.net.URL;

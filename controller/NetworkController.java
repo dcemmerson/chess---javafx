@@ -1,4 +1,4 @@
-/*	name: NetworkController.java
+/*	filename: NetworkController.java
  *	last modified: 06/23/2020
  * 	description: Controller class for Network scene and connecting hosts
  * 					via sockets as well as sending messages and game
@@ -13,12 +13,8 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import network.ChessDataPacket;
 import network.ChessHost;

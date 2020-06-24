@@ -1,4 +1,4 @@
-/*	name: MainController.java
+/*	filename: MainController.java
  *	last modified: 06/23/2020
  * 	description: Main controller used on chess board page. Provides 
  * 					interface for various components to communicate without
@@ -141,6 +141,13 @@ public class MainController extends Controller implements Initializable {
 	private MainActions defineMainActions() {
 		return new MainActions() {
 
+			/*	name: appendToChatBox
+			 * 	arguments: 	str - String to format and append into chat box pane
+			 * 				white - boolean indicating which player entered string
+			 * 	description: Interface method to append formated string into chat pane.
+			 * 					This flavor of method should be used to append messages
+			 * 					into chat pane.
+			 */
 			@Override
 			public void appendToChatBox(String str, boolean white) {
 
@@ -155,6 +162,13 @@ public class MainController extends Controller implements Initializable {
 				}
 			}
 			
+			/*	name: appendToChatBox
+			 * 	arguments: 	str - String to format and append into chat box pane
+			 * 	description: Interface method to append formated string into chat pane.
+			 * 					This flavor of method should be used to display infomation
+			 * 					back to user about previous move made - eg capture that
+			 * 					took place.
+			 */
 			@Override
 			public void appendToChatBox(String str) {
 
@@ -174,6 +188,12 @@ public class MainController extends Controller implements Initializable {
 				}
 			}
 
+			/*	name: sendText
+			 * 	arguments:	str - String message to send to other host
+			 * 	description: Send string message to other host using instance of
+			 * 					NetworkController. Called after user types text
+			 * 					in chat pane and hit enter.
+			 */
 			@Override
 			public void sendText(String str) {
 				if (networkController != null) {
@@ -182,6 +202,13 @@ public class MainController extends Controller implements Initializable {
 				}
 			}
 
+			/*	name: receiveText
+			 * 	arguments:	str - String message received from other host
+			 * 	description: Receive text string from other host. If we
+			 * 					are playing a remote game, this method will
+			 * 					be called upon our NetworkController listening
+			 * 					and receiving a string from other host.
+			 */
 			@Override
 			public void receiveText(String str) {
 				Text t = new Text(str + "\n");
@@ -194,6 +221,12 @@ public class MainController extends Controller implements Initializable {
 				chatBox.appendText(t);
 			}
 			
+			/*	name:
+			 * 	arguments: cdp - filled in ChessDataPacket coming from other host
+			 * 	description: Receive a ChessDataPacket from other host when playing
+			 * 					remote game. Test if ChessDataPacket contains a text
+			 * 					message to display to this user, or a move to make.
+			 */
 			@Override
 			public void receiveChessDataPacket(ChessDataPacket cdp) {
 				if(cdp != null) {
@@ -212,12 +245,8 @@ public class MainController extends Controller implements Initializable {
 					}
 				}
 			}
-			@Override
-			public void startGame(boolean player1IsRemote, boolean player2IsRemote) {
-				Game game = new Game(player1IsRemote, player2IsRemote, false, false);
+			
 
-				gameController = new GameController(game, chessBoardAnchorPane, chessCanvas, this);
-			}
 
 		};
 	}

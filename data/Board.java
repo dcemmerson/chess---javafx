@@ -1,3 +1,7 @@
+/*	filename: Board.java
+ * 	last modified: 06/23/2020
+ * 	description: Contains chess game board data portion.
+ */
 package data;
 
 public class Board {
@@ -16,6 +20,16 @@ public class Board {
 		return board;
 	}
 	
+	/*	name: queenify
+	 * 	arguments: xSquare/ySquare - ints representing location on board of
+	 * 				pawn turning into queen.
+	 * 	description: If piece is at opponents edge of board, call the queenify
+	 * 					method on that piece. If that piece is a pawn, the
+	 * 					Pawn.queenify method will return a new Queen which will
+	 * 					be placed in our board array. Otherwise, all other pieces
+	 * 					do not have a queenify method defined in the subclasses
+	 * 					and will default to Piece.queenify, which just returns.
+	 */
 	public void queenify(int xSquare, int ySquare){
 		if(ySquare == 0 || ySquare == (Board.SQUARES_HIGH - 1)) {
 			Piece p = board[ySquare][xSquare];
@@ -23,6 +37,13 @@ public class Board {
 		}
 	}
 	
+	/*	name: isValidMoveType
+	 * 	arguments: fromX/Y, toX/Y - ints representing to and from locations.
+	 * 	description: Return true if move attempt is valid, else false. This 
+	 * 					method also verifies that if this move is a capture
+	 * 					move, then the piece capturing and captured piece
+	 * 					are of opposite colors.
+	 */
 	public boolean isValidMoveType(int fromX, int fromY, int toX, int toY) {
 		Piece piece = board[fromY][fromX];
 		
@@ -34,6 +55,14 @@ public class Board {
 		return false;
 	}
 	
+	/* 	name: isPieceBetween
+	 * 	arguments: fromX/Y, toX/Y - ints representing to and from locations.
+	 * 	description: Method determines if there is a piece between the toX/Y
+	 * 					location and the fromX/Y location. Method checks for
+	 * 					pieces between straight moves in the x or y direction,
+	 * 					or moves along the diagonal. Returns true if piece
+	 * 					between, else false.
+	 */
 	public boolean isPieceBetween(int fromX, int fromY, int toX, int toY) {
 		int xDiff = toX - fromX;
 		int yDiff = toY - fromY;
@@ -58,8 +87,12 @@ public class Board {
 		return false;
 	}
 	
+	/* 	name: execMove
+	 * 	arguments: fromX/Y, toX/Y - ints representing to and from locations.
+	 * 	description: Execute move and update gameboard. Move should already have
+	 * 					been validated before calling this method.
+	 */
 	public Piece execMove(int fromX, int fromY, int toX, int toY) {
-		System.out.println("making move: (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
 
 		Piece captured = board[toY][toX];		
 		board[toY][toX] = board[fromY][fromX];
@@ -68,6 +101,13 @@ public class Board {
 		return captured;
 	}
 	
+	/* 	name: unexecMove
+	 * 	arguments: fromX/Y, toX/Y - ints representing to and from locations.
+	 * 	description: Un-execute move and update gameboard. This method is necessary and
+	 * 					if called if user moves into check, as we will not catch this 
+	 * 					as being an invalid move until we already updated gameboard and
+	 * 					realized player tried to move into check.
+	 */
 	public void unexecMove(Piece uncaptured, int toX, int toY, int fromX, int fromY) {
 		System.out.println("unmaking move");
 		board[fromY][fromX] = board[toY][toX];
@@ -75,6 +115,10 @@ public class Board {
 		
 	}
 	
+	/*	name: initializeBoard
+	 * 	description: Create array of empty Pieces, all set to null, representing
+	 * 					8x8 gameboard.
+	 */
 	private void initializeBoard() {
 		board = new Piece[SQUARES_HIGH][];
 		
@@ -85,6 +129,13 @@ public class Board {
 			}
 		}
 	}
+	
+	/*	name: placePieces
+	 * 	description: Take player instances passed in, get each player's pieces
+	 * 					and set locations in board array equal to these Piece
+	 * 					references at appropriate locations according to chess
+	 * 					starting location rules.
+	 */
 	private void placePieces(Player player1, Player player2) {
 		//rooks
 		this.board[0][0] = player1.getRook1();
@@ -106,6 +157,7 @@ public class Board {
 		//queens
 		this.board[0][4] = player1.getQueen();
 		this.board[7][3] = player2.getQueen();
+		
 		//kings
 		this.board[0][3] = player1.getKing();
 		this.board[7][4] = player2.getKing();
@@ -131,6 +183,10 @@ public class Board {
 
 	}
 	
+	/*	name: printBoard
+	 * description: Iterate through board array and print piece at each location.
+	 * 				Only used for debug purposes.
+	 */
 	public void printBoard() {
 		for(int y = 0; y < Board.SQUARES_HIGH; y++) {
 			System.out.print("row " + y + ": ");
