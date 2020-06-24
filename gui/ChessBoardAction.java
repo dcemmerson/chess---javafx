@@ -7,5 +7,4 @@ public interface ChessBoardAction {
 	public void removeImage(PieceImageView img);
 	public void switchTurns(boolean isWhiteTurn, String captureMessage);
 	public void sendMoveToOtherPlayer(int fromX, int fromY, int toX, int toY);
-	public void refresh();
 }

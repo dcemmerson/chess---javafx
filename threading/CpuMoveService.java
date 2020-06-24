@@ -32,7 +32,6 @@ public class CpuMoveService extends MoveService {
 			}
 			if (!game.isEnded()) {
 				mp = chessboard.cpuMakeMove(player);
-				System.out.println("after chessboard cpumakemove");
 			}
 			else {
 				

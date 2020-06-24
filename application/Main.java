@@ -1,3 +1,8 @@
+/*	filename: Main.java
+ * 	description: Contains entry point to application. Loads up screen controller
+ * 					and passes necessary files or file paths depending upon 
+ * 					options set.
+ */
 package application;
 	
 import java.io.IOException;
@@ -11,6 +16,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private ScreenController sc;
 	
+	/*	name: start
+	 * 	description: Entry point for application GUI.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -26,6 +34,12 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	/* 	name: loadScenes
+	 * 	description: Loads scene names and file paths to assets required for creating
+	 * 					scenes into ScreenController sc object for simple access
+	 * 					at later point in application.
+	 */
 	public void loadScenes() throws IOException {
 		//chess main screen
 		
@@ -35,6 +49,9 @@ public class Main extends Application {
 
 	}
 	
+	/*	name: main
+	 * 	description: Main entry point for application.
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

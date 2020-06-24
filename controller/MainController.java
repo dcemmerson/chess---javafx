@@ -1,8 +1,15 @@
+/*	name: MainController
+ *	last modified: 06/23/2020
+ * 	description: Main controller used on chess board page. Provides 
+ * 					interface for various components to communicate without
+ * 					directly relying on each other. Contains references to
+ * 					components on chess board.
+ */
+
 package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 
 import data.Game;
 import gui.ChatBoxTypeArea;
@@ -60,6 +67,12 @@ public class MainController extends Controller implements Initializable {
 
 	private String username;
 
+	/*	name: initialize
+	 * 	description: Stage initialize method called upon user selecting any local
+	 * 					game type - local vs local, local vs cpu, etc. This version
+	 * 					of initialize is also called by the remote version of intialize
+	 * 					after we create and set the NetworkController.
+	 */
 	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args) {
 		MainActions mainActions = defineMainActions();
 		this.screen = screen;
@@ -84,6 +97,11 @@ public class MainController extends Controller implements Initializable {
 
 	}
 
+	/*	name: initialize
+	 * 	description: Stage initialize method called only when playing
+	 * 					remote game. Sets MainController's NetworkController,
+	 * 					but the connected ChessHost object must be passed in.
+	 */
 	public void initialize(Stage primaryStage, ChangeScreen screen, GameType args, ChessHost ch) {
 		this.networkController = new NetworkController(ch, defineMainActions());
 		this.username = ch.getUserName();
@@ -92,10 +110,12 @@ public class MainController extends Controller implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
 
 	}
 
+	/*	name: quiteGame
+	 * 	description: Handle event when user select quit game from top bar.
+	 */
 	@FXML
 	public void quitGame() {
 		gameController.endGame();
@@ -104,12 +124,20 @@ public class MainController extends Controller implements Initializable {
 		}
 		screen.changeScreens("Start", null, true, false);
 	}
-
+	
+	/*	name: closeGame
+	 * 	description: Handle event when user select exit game from top bar.
+	 */
 	@FXML
 	public void closeGame() {
 		System.exit(0);
 	}
 
+	/*	name: defineMainActions
+	 * 	description: Return MainActions interface. General interface used
+	 * 					for communication between components on chess
+	 * 					board screen.
+	 */
 	private MainActions defineMainActions() {
 		return new MainActions() {
 
@@ -194,6 +222,10 @@ public class MainController extends Controller implements Initializable {
 		};
 	}
 
+	/*	name: setStageBehavior
+	 * 	description: Called in class constructor to set responsive layout
+	 * 				of chess board and other components on chess board page.
+	 */
 	public void setStageBehavior() {
 		connectionLostPane.toBack();
 		
