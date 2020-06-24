@@ -1,3 +1,10 @@
+/*	filename: ObjectInputStreamSocket.java
+ * 	last modified: 06/24/2020
+ * 	description: Class designed to read data incoming from opponent host
+ * 					using ObjectInputStream, cast and return that Object
+ * 					to a ChessDataPacket.
+ */
+
 package network;
 
 import java.io.IOException;

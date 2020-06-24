@@ -1,4 +1,5 @@
 /*	filename: ChessBoard.java
+ * 	last modified: 06/24/2020
  * 	description: ChessBoard class is responsible for drawing the GUI chessboard
  * 					and handling move events on the board from local player,
  * 					cpus, or remote players.

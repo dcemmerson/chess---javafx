@@ -1,5 +1,5 @@
 /*	filename: PlayerInterface.java
- * 	last modified: 06/23/2020
+ * 	last modified: 06/24/2020
  */
 
 package controller;

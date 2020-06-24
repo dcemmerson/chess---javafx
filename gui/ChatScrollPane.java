@@ -1,3 +1,9 @@
+/*	filename: ChatBoxScrollPane.java
+ * 	last modified: 06/24/2020
+ * 	description: Class for controlling the ScrollPane which is part
+ * 					of the chat box area on chess screen.
+ */
+
 package gui;
 
 import javafx.scene.control.ScrollPane;
@@ -19,8 +25,8 @@ public class ChatScrollPane extends BorderPane{
 		
 		setCenter(scrollPane);
 		scrollPane.setContent(textFlow);
-
 	}
+	
 	public void appendText(Text text) {
 		textFlow.getChildren().add(text);
 

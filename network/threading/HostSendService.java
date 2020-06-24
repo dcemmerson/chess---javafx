@@ -1,3 +1,10 @@
+/*	name: HostSendService.java
+ * 	last modified: 06/24/2020
+ * 	description: Manages creating new thread for the purpose of sending
+ * 					instances of ChessDataPacket across network to 
+ * 					opponent host.
+ */
+
 package network.threading;
 
 import java.io.IOException;

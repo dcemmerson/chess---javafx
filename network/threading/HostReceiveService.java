@@ -1,3 +1,10 @@
+/*	name: HostReceiveService.java
+ * 	last modified: 06/24/2020
+ * 	description: Manages creating new thread for the purpose of receiving
+ * 					instances of ChessDataPacket across network from an 
+ * 					opponent host.
+ */
+
 package network.threading;
 
 import java.io.IOException;

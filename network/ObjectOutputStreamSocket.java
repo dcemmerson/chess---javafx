@@ -1,3 +1,9 @@
+/*	filename: ObjectInputStreamSocket.java
+ * 	last modified: 06/24/2020
+ * 	description: Class designed to send ChessDataPacket to opponent host
+ * 					using ObjectOutputStream.
+ */
+
 package network;
 
 import java.io.IOException;

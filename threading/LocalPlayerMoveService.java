@@ -1,3 +1,14 @@
+/*	filename: LocalPlayerMoveService.java
+ * 	last modified: 06/24/2020
+ * 	description: MoveService child class. LocalPlayerMoveService manages a
+ * 					local player making a move in a separate thread, as 
+ * 					to not block GUI. This could just be done in main thread, but
+ * 					since we need to create separate tasks to allow cpu to make
+ * 					moves without blocking main thread (as not doing so would 
+ * 					seriously impact performance), we are performing local
+ * 					player moves in a separate thread as well for streamlined code.
+ */
+
 package threading;
 
 import java.util.concurrent.locks.Lock;
@@ -15,6 +26,14 @@ public class LocalPlayerMoveService extends MoveService {
 		super(g, cb, p, l);
 	}
 	
+	/*	name: startMoveThread
+	 * 	description: Implements abstract method in parent class. Uses a reentrant 
+	 * 					lock to synchronize moves and ensure local player is
+	 * 					not allowed to move out of turn. Back-end chess data
+	 * 					classes would block a player moving out of turn, so the
+	 * 					lock isn't entirely necessary but it works well with 
+	 * 					synchronizing cpu moves in CpuMoveService class.
+	 */
 	@Override
 	protected MoveProperties startMoveThread() {
 		hasMoved = false;
@@ -28,7 +47,6 @@ public class LocalPlayerMoveService extends MoveService {
 					lock.unlock();
 					Thread.sleep(500);
 				}
-
 			}
 			
 			if(!game.isEnded()) {
@@ -40,12 +58,7 @@ public class LocalPlayerMoveService extends MoveService {
 					Thread.sleep(100);
 				}
 			}
-/*			else {
-				String gameOverStr = getGameOverMsg();
 
-				mp = new MoveProperties(gameOverStr, null);
-			}
-*/			
 		} catch (InterruptedException e) {
 			System.out.println("Thread sleep interrupted.");
 		} finally {
@@ -55,6 +68,13 @@ public class LocalPlayerMoveService extends MoveService {
 		return mp;
 	}
 	
+	/*	name: localPlayerInterface
+	 * 	description: Defines and returns PlayerInterface method. Allows the
+	 * 					ChessBoard class to easily and cleanly signal back to
+	 * 					our non-JavaFX thread that the user has made a successful
+	 * 					move on chess board and we can now set appropriate flags
+	 * 					in this class to end player's turn.
+	 */
 	private PlayerInterface localPlayerInterface() {
 		return new PlayerInterface() {
 			

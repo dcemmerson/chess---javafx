@@ -1,3 +1,10 @@
+/*	filename: ChessDataPacket.java
+ * 	last modified: 06/24/2020
+ * 	description: Class to encapsulate information being sent between
+ * 					hosts over network. Used for both sending just plain
+ * 					text and for sending moves to other host.
+ */
+
 package network;
 
 import java.io.Serializable;

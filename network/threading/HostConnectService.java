@@ -1,3 +1,11 @@
+/*	filename: HostConnectService.java
+ * 	last modified: 06/24/2020
+ * 	description: HostConnectService abstract class provides parent class to 
+ * 					ClientConnectService and ServerConnectService
+ * 					classes, which perform tasks of establishing connection
+ * 					between hosts for remote game.
+ */
+
 package network.threading;
 
 import java.io.IOException;
@@ -6,13 +14,17 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import network.ChessHost;
 
-public class HostConnectService extends Service<Object> {
+public abstract class HostConnectService extends Service<Object> {
 	
 	protected ChessHost chessHost;
 	protected String port;
 	protected boolean server;
 	protected String username;
 	
+	/*	name: createTask
+	 * 	description: Entry point in new thread. Just call the connect method, which is
+	 * 					abstract and must be appropriately defined in child classes.
+	 */
 	@Override
 	protected Task<Object> createTask() {
 		return new Task<Object>() {
@@ -24,10 +36,7 @@ public class HostConnectService extends Service<Object> {
 		};
 	}
 	
-	protected Object connect() throws InterruptedException {
-		System.out.println("Wrong connect - define in child class.");
-		return null;
-	}
+	protected abstract Object connect() throws InterruptedException;
 	
 	public void closeSocket() {
 		try {

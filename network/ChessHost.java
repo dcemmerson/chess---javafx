@@ -1,3 +1,19 @@
+/* 	filename: ChessHost.java
+ * 	last modified: 06/24/2020
+ * 	description: Parent class to ChessClient and ChessServer. Using
+ * 					this parent class, we can listen for a connection 
+ * 					and attempt to connect to other host at same time 
+ * 					using the child class ChessClient and ChessServer.
+ * 					Upon successful connection to remote host, one host's
+ * 					ChessClient will have succeeded with the connection to
+ * 					the other host's ChessServer. However, since ChessClient
+ * 					and ChessServer inherit from ChessHost and only differ
+ * 					by their listen/connect methods, thereafter the connection
+ * 					has been established we can essentially treat these
+ * 					objects the same, sending and receiving, thus simplifying
+ * 					our code.
+ */
+
 package network;
 
 import java.io.IOException;

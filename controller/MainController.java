@@ -1,5 +1,5 @@
 /*	filename: MainController.java
- *	last modified: 06/23/2020
+ *	last modified: 06/24/2020
  * 	description: Main controller used on chess board page. Provides 
  * 					interface for various components to communicate without
  * 					directly relying on each other. Contains references to

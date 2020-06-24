@@ -1,3 +1,10 @@
+/*	filename: ChatBoxTypeArea.java
+ * 	last modified: 06/24/2020
+ * 	description: Class for controlling the TextArea typing pane on screen.
+ * 					Attaches event handler and passes user entered text 
+ * 					back to MainController via the MainActions interface.
+ */
+
 package gui;
 
 import controller.MainActions;
@@ -14,6 +21,15 @@ public class ChatBoxTypeArea extends BorderPane {
 	private boolean white;
 	private String username;
 	
+	/*	name: ChatBoxTypeArea constructor
+	 * 	arguments: 	ma - MainActions interface with methods already defined
+	 * 				white - boolean indicating if this player is white. Only
+	 * 					relevent in 2 player remote game.
+	 * 				username - string representing user entered handle, if 
+	 * 					playing 2 player remote game.
+	 * 	description: Initialize ChatBoxTypeArea member variables and attach
+	 * 					event handler to user pressing enter inside chatbox.
+	 */
 	public ChatBoxTypeArea(MainActions ma, boolean isWhite, String username) {
 		super();
 		

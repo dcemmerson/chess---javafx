@@ -1,3 +1,8 @@
+/*	filename: ChessMove.java
+ * 	last modified: 06/24/2020
+ * 	description: Just a helper class to organize a move toX/Y, fromX/Y
+ * 					info, specifically when sending move across network.
+ */
 package utility;
 
 import java.io.Serializable;
