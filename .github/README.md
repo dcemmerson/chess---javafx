@@ -30,9 +30,17 @@ Why this project?
 I created this personal exploration project to learn more about Java and gain experience using the JavaFX platform. 
 This project afforded me additional opportunity to improve my skills in several areas, including threading and networking.
 
-Samples
+Previews
 ======
 2 player local game 
 -------------------
 ![](./2PlayerLocal.gif)
+
+1 player vs computer 
+-------------------
+![](./1PlayerVsCpu.gif)
+
+Computer vs computer 
+-------------------
+![](./CpuVsCpu.gif)
 
