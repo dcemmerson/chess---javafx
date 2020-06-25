@@ -19,7 +19,7 @@ To try this program, download [chess.jar](../chess.jar). Next execute the chess.
 If the application does not start after attempting to execute chess.jar, it might be for the following reasons:
 1. chess.jar does not have execute permissions - `chmod +x chess.jar` on Unix-like systems.
 2. The JAR file type is not associated with the JRE installed on your system. [Troubleshoot JAR file associations](https://netbeans.org/kb/articles/javase-deploy.html#troubleshooting)
-3. A Java Runtime Environment (JRE) is required to run this application. If your system does not already have a JRE installed, download [JRE](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)
+3. A Java Runtime Environment (JRE) is not installed on your system. Check if a JRE is installed (enter `java -version` in terminal). If your system does not already have a JRE installed, download [JRE](https://www.oracle.com/java/technologies/javase-jre8-downloads.html).
 
 Build it yourself
 -----------------
@@ -29,3 +29,9 @@ Why this project?
 -----------------
 I created this personal exploration project to learn more about Java and gain experience using the JavaFX platform. 
 This project afforded me additional opportunity to improve my skills in several areas, including threading and networking.
+
+Samples
+======
+2 player local game 
+-------------------
+![](./.github/2PlayerLocal.gif)
