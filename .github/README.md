@@ -34,4 +34,5 @@ Samples
 ======
 2 player local game 
 -------------------
-![](./.github/2PlayerLocal.gif)
+![](./2PlayerLocal.gif)
+
