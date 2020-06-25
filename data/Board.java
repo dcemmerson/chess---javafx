@@ -156,11 +156,11 @@ public class Board {
 
 		//queens
 		this.board[0][4] = player1.getQueen();
-		this.board[7][3] = player2.getQueen();
+		this.board[7][4] = player2.getQueen();
 		
 		//kings
 		this.board[0][3] = player1.getKing();
-		this.board[7][4] = player2.getKing();
+		this.board[7][3] = player2.getKing();
 		
 		//pawns
 		this.board[1][0] = player1.getPawn1();
