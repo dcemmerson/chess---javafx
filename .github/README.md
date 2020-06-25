@@ -13,11 +13,17 @@ Four modes are available in which to play this chess game:
 
 Try it out
 ----------
-To try this program, download [chess.jar](../chess.jar). Next try executing the chess.jar file from the download location.
+To try this program, download [chess.jar](../chess.jar). Next execute the chess.jar file from the download location either by double clicking chess.jar, or via the terminal.
 
+**Troubleshooting**  
+If the application does not start after attempting to execute chess.jar, it might be for the following reasons:
+1. chess.jar does not have execute permissions - `chmod +x chess.jar` on Unix-like systems.
+2. The JAR file type is not associated with the JRE installed on your system. [Troubleshoot JAR file associations](https://netbeans.org/kb/articles/javase-deploy.html#troubleshooting)
+3. A Java Runtime Environment (JRE) is required to run this application. If your system does not already have a JRE installed, download [JRE](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)
 
 Build it yourself
 -----------------
+Adding instructions soon.
 
 Why this project?
 -----------------
